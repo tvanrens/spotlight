@@ -1,0 +1,37 @@
+name: Prepare monthly research updates for approval
+on:
+  schedule:
+    - cron: '15 7 1 * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  prepare-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt && python -m playwright install --with-deps chromium
+      - name: Prepare updates without publishing
+        run: python scripts/update.py
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: gpt-4.1-mini
+      - name: Propose changes as a pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: proposed-monthly-refresh
+          delete-branch: true
+          commit-message: 'Draft monthly research updates for editorial review'
+          title: 'Review monthly research updates'
+          body: |
+            **Not yet published.** Review the sources, factual claims, article lengths, images and links.
+            When you are satisfied, select **Merge pull request** to publish via GitHub Pages.
+            New or insufficiently sourced outputs should remain labelled as briefs until verified.
+          add-paths: |
+            data/publications.json
+            data/articles.json
+            data/site-data.js
