@@ -1,116 +1,22 @@
 [
   {
-    "id": "salient-trial",
-    "title": "Effects of Eco-labels and Price Discounts on Promoting More Sustainable Grocery Purchases in an Online UK Supermarket: A Randomised Controlled Field Trial",
-    "date": "2026-05-07",
-    "type": "Working paper",
-    "source": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6724458",
-    "doi": "10.2139/ssrn.6724458",
-    "category": "Food choices",
-    "abstract": "A randomised controlled field trial investigating eco-labels and price discounts for environmentally sustainable food purchases in UK online grocery shopping. The study investigates whether labels, financial incentives and their combination can shift grocery decisions.",
-    "angle": "Can a supermarket nudge shoppers towards greener baskets?",
-    "teaser": "What happens when greener groceries become easier to spot—and cheaper to choose? A UK online supermarket field trial tests whether information, money, or a combination can shift what lands in our baskets.",
-    "image": "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Colourful fruit and vegetable supermarket display",
+    "id": "publication-3e40d2f3aafa",
+    "title": "Response to the Dutch government consultation on the sugar tax (internetconsultatie suikerbelasting)",
+    "date": "2026-09-09",
+    "type": "Research output",
+    "source": "https://www.internetconsultatie.nl/suikerbelasting/reactie/e2de901f-7fab-4360-b708-63c12b92e5cf",
+    "doi": "",
+    "category": "Research",
+    "abstract": "",
+    "angle": "Response to the Dutch government consultation on the sugar tax (internetconsultatie suikerbelasting)",
+    "teaser": "Explore the research behind this recent output.",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
+    "local_image": "images/market-feature.webp",
+    "image_alt": "Research notes and data",
     "tags": [
-      "Food systems",
-      "Field experiment",
-      "Sustainability"
+      "Research"
     ],
-    "status": "verified-metadata",
-    "authors": "Thijs van Rens, Helena Bentil, Peter Scarborough, Hamideh Mohtashami Borzadaran, Michael Clark, Claire Thompson, Jessica Brock, Elisa Becker, Laura Cornelsen, Martin White and Oyinlola Oyebode",
-    "venue": "SSRN / Preprints with The Lancet (working paper)",
-    "local_image": "images/market-feature.webp"
-  },
-  {
-    "id": "food-policy-review",
-    "title": "Health economics evidence for food system policy: a systematic review of reviews",
-    "date": "2025-12-12",
-    "type": "Journal article",
-    "source": "https://doi.org/10.3389/fnut.2025.1629814",
-    "doi": "10.3389/fnut.2025.1629814",
-    "category": "Food policy",
-    "abstract": "Thirty-six systematic reviews covered 718 primary studies. Twenty-one reviews addressed demand-side interventions, four supply-side alone, and eleven combinations. Supply-side approaches such as reformulation were more effective at changing dietary behaviours than demand-side measures such as labelling in the reviewed evidence. The authors recommend societal cost-benefit analysis and more investigation of effective policy packages.",
-    "angle": "What actually works when governments try to improve our diets?",
-    "teaser": "Taxes, labels, reformulation, subsidies: which tools really improve diets? A review spanning 718 studies suggests changing what companies sell may matter more than simply telling consumers what to buy.",
-    "image": "https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Fresh fruit and vegetables on a table",
-    "tags": [
-      "Nutrition",
-      "Public policy",
-      "Evidence review"
-    ],
-    "status": "verified-abstract",
-    "authors": "Lin Fu, Irina Pokhilenko, Thijs van Rens, Richard Smith and Emma Frew",
-    "venue": "Frontiers in Nutrition, volume 12 (2025)",
-    "local_image": "images/landscape-sunset.webp"
-  },
-  {
-    "id": "wage-rigidity",
-    "title": "Why did we think wages are rigid for all those years?",
-    "date": "2025-09-08",
-    "type": "Working paper",
-    "source": "https://wrap.warwick.ac.uk/193097/",
-    "category": "Labour economics",
-    "abstract": "Using U.S. Current Population Survey data, this study finds that rounding in workers' reported wages exaggerates the spike at zero nominal wage growth. Adjusting for rounding shrinks the apparent share of unchanged wages from 15–20% to 7–12%, consistent with recent administrative-data estimates.",
-    "angle": "The wage freeze that wasn't quite what it seemed",
-    "teaser": "Economists have spent decades puzzling over why wages seem so hard to cut. Part of the mystery may lie not in employers' pay policies, but in how workers round the numbers when surveys ask about their earnings.",
-    "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Calculator and financial paperwork on desk",
-    "tags": [
-      "Wages",
-      "Inflation",
-      "Measurement"
-    ],
-    "status": "verified-abstract",
-    "authors": "See-Yu Chan, Stephan Hobler and Thijs van Rens",
-    "venue": "Warwick Economics Research Papers, no. 1577 (2025)",
-    "local_image": "images/labour-city.webp"
-  },
-  {
-    "id": "pilot-online-groceries",
-    "title": "Promoting environmentally sustainable food purchases in online grocery shopping: insights from a pilot randomised controlled field trial",
-    "date": "2025-07-15",
-    "type": "Journal article",
-    "source": "https://doi.org/10.1186/s13104-025-07370-5",
-    "doi": "10.1186/s13104-025-07370-5",
-    "category": "Food choices",
-    "abstract": "The research team built a Chrome browser extension to deliver environmental eco-labels on a UK supermarket website. Of 504 screened, 161 were eligible and 57 installed the extension, with 22 shopping at least once. The study did not find a statistically significant difference in eco-scores of purchases, but established the feasibility of testing interventions without supermarket cooperation.",
-    "angle": "Could a browser extension change the weekly food shop?",
-    "teaser": "A small pilot put sustainability labels directly into a real online supermarket. The biggest discovery wasn't a dramatic change in buying—it was a new way to test shopping interventions without needing a retailer to take part.",
-    "image": "https://images.unsplash.com/photo-1601593768795-5c1c2b147f5f?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Grocery shopping basket",
-    "tags": [
-      "Online shopping",
-      "Experiment",
-      "Eco-labels"
-    ],
-    "status": "verified-abstract",
-    "authors": "Helena Bentil, Oyinlola Oyebode, Peter Scarborough, Claire Thompson, Jessica Brock, Michael Clark, Martin White and Thijs van Rens",
-    "venue": "BMC Research Notes, volume 18, article 294 (2025)",
-    "local_image": "images/supermarket-shopper.webp"
-  },
-  {
-    "id": "pantry-food-insecurity",
-    "title": "Evaluating the impact of food pantry membership on food insecurity amongst English households: a national-level quasi-experimental study",
-    "date": "2026-04-01",
-    "type": "Conference abstract",
-    "source": "https://jech.bmj.com/content/80/Suppl_1/A12.1.full",
-    "doi": "10.1136/ukphsc-2026-abstracts.26",
-    "category": "Food policy",
-    "abstract": "Summary based on the published conference abstract; the conference abstract is the full published record currently available.",
-    "angle": "Can food pantries make a measurable difference?",
-    "teaser": "Food pantries promise a route to more secure diets. A national quasi-experimental study investigates whether membership can make a measurable difference to food insecurity in England.",
-    "image": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Food donation and community support",
-    "tags": [
-      "Food insecurity",
-      "Evaluation"
-    ],
-    "status": "verified-abstract",
-    "authors": "Suruchi Gajanan Ganbavale, Thijs van Rens, Oyinlola Oyebode, Natasha Bayes and Rachel Loopstra",
-    "venue": "Journal of Epidemiology & Community Health, 80(Suppl 1), A12.1 (conference abstract, 2026)",
-    "local_image": "images/supermarket-aisle.webp"
+    "status": "metadata-only"
   },
   {
     "id": "salient-oxford",
@@ -159,6 +65,195 @@
     "local_image": "images/dining.webp"
   },
   {
+    "id": "salient-trial",
+    "title": "Effects of Eco-labels and Price Discounts on Promoting More Sustainable Grocery Purchases in an Online UK Supermarket: A Randomised Controlled Field Trial",
+    "date": "2026-05-07",
+    "type": "Working paper",
+    "source": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6724458",
+    "doi": "10.2139/ssrn.6724458",
+    "category": "Food choices",
+    "abstract": "A randomised controlled field trial investigating eco-labels and price discounts for environmentally sustainable food purchases in UK online grocery shopping. The study investigates whether labels, financial incentives and their combination can shift grocery decisions.",
+    "angle": "Can a supermarket nudge shoppers towards greener baskets?",
+    "teaser": "What happens when greener groceries become easier to spot—and cheaper to choose? A UK online supermarket field trial tests whether information, money, or a combination can shift what lands in our baskets.",
+    "image": "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=85",
+    "image_alt": "Colourful fruit and vegetable supermarket display",
+    "tags": [
+      "Food systems",
+      "Field experiment",
+      "Sustainability"
+    ],
+    "status": "verified-metadata",
+    "authors": "Thijs van Rens, Helena Bentil, Peter Scarborough, Hamideh Mohtashami Borzadaran, Michael Clark, Claire Thompson, Jessica Brock, Elisa Becker, Laura Cornelsen, Martin White and Oyinlola Oyebode",
+    "venue": "SSRN / Preprints with The Lancet (working paper)",
+    "local_image": "images/market-feature.webp"
+  },
+  {
+    "id": "publication-d4769a685c79",
+    "title": "Effects of Eco-labels and Price Discounts on Promoting More Sustainable Grocery Purchases in an Online UK Supermarket: A Randomised Controlled Field Trial",
+    "date": "2026-05-07",
+    "type": "Research output",
+    "source": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6724458",
+    "doi": "10.2139/SSRN.6724458",
+    "category": "Research",
+    "abstract": "",
+    "angle": "Effects of Eco-labels and Price Discounts on Promoting More Sustainable Grocery Purchases in an Online UK Supermarket: A Randomised Controlled Field Trial",
+    "teaser": "Explore the research behind this recent output.",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
+    "local_image": "images/market-feature.webp",
+    "image_alt": "Research notes and data",
+    "tags": [
+      "Research"
+    ],
+    "status": "metadata-only"
+  },
+  {
+    "id": "pantry-food-insecurity",
+    "title": "Evaluating the impact of food pantry membership on food insecurity amongst English households: a national-level quasi-experimental study",
+    "date": "2026-04-01",
+    "type": "Conference abstract",
+    "source": "https://jech.bmj.com/content/80/Suppl_1/A12.1.full",
+    "doi": "10.1136/ukphsc-2026-abstracts.26",
+    "category": "Food policy",
+    "abstract": "Summary based on the published conference abstract; the conference abstract is the full published record currently available.",
+    "angle": "Can food pantries make a measurable difference?",
+    "teaser": "Food pantries promise a route to more secure diets. A national quasi-experimental study investigates whether membership can make a measurable difference to food insecurity in England.",
+    "image": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1200&q=85",
+    "image_alt": "Food donation and community support",
+    "tags": [
+      "Food insecurity",
+      "Evaluation"
+    ],
+    "status": "verified-abstract",
+    "authors": "Suruchi Gajanan Ganbavale, Thijs van Rens, Oyinlola Oyebode, Natasha Bayes and Rachel Loopstra",
+    "venue": "Journal of Epidemiology & Community Health, 80(Suppl 1), A12.1 (conference abstract, 2026)",
+    "local_image": "images/supermarket-aisle.webp"
+  },
+  {
+    "id": "publication-7d13608524ca",
+    "title": "P03-4 Evaluating the impact of food pantry membership on food insecurity amongst English households: a national-level quasi-experimental study",
+    "date": "2026-04-01",
+    "type": "Research output",
+    "source": "https://doi.org/10.1136/ukphsc-2026-abstracts.26",
+    "doi": "10.1136/UKPHSC-2026-ABSTRACTS.26",
+    "category": "Research",
+    "abstract": "",
+    "angle": "P03-4 Evaluating the impact of food pantry membership on food insecurity amongst English households: a national-level quasi-experimental study",
+    "teaser": "Explore the research behind this recent output.",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
+    "local_image": "images/market-feature.webp",
+    "image_alt": "Research notes and data",
+    "tags": [
+      "Research"
+    ],
+    "status": "metadata-only"
+  },
+  {
+    "id": "food-policy-review",
+    "title": "Health economics evidence for food system policy: a systematic review of reviews",
+    "date": "2025-12-12",
+    "type": "Journal article",
+    "source": "https://doi.org/10.3389/fnut.2025.1629814",
+    "doi": "10.3389/fnut.2025.1629814",
+    "category": "Food policy",
+    "abstract": "Thirty-six systematic reviews covered 718 primary studies. Twenty-one reviews addressed demand-side interventions, four supply-side alone, and eleven combinations. Supply-side approaches such as reformulation were more effective at changing dietary behaviours than demand-side measures such as labelling in the reviewed evidence. The authors recommend societal cost-benefit analysis and more investigation of effective policy packages.",
+    "angle": "What actually works when governments try to improve our diets?",
+    "teaser": "Taxes, labels, reformulation, subsidies: which tools really improve diets? A review spanning 718 studies suggests changing what companies sell may matter more than simply telling consumers what to buy.",
+    "image": "https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&w=1200&q=85",
+    "image_alt": "Fresh fruit and vegetables on a table",
+    "tags": [
+      "Nutrition",
+      "Public policy",
+      "Evidence review"
+    ],
+    "status": "verified-abstract",
+    "authors": "Lin Fu, Irina Pokhilenko, Thijs van Rens, Richard Smith and Emma Frew",
+    "venue": "Frontiers in Nutrition, volume 12 (2025)",
+    "local_image": "images/landscape-sunset.webp"
+  },
+  {
+    "id": "publication-1e6b3d72cb76",
+    "title": "Health economics evidence for food system policy : a systematic review of reviews",
+    "date": "2025-12-12",
+    "type": "Research output",
+    "source": "https://figshare.warwick.ac.uk/articles/journal_contribution/Health_economics_evidence_for_food_system_policy_a_systematic_review_of_reviews/33909718",
+    "doi": "10.3389/FNUT.2025.1629814",
+    "category": "Research",
+    "abstract": "10.3389/FNUT.2025.1629814\nFood system interventions are needed for improving public health and to address health inequalities. Economics evidence enables an understanding of the costs associated with these interventions when offset against the gains to society. Here, we define economic analysis as studies of the effect of an intervention on prices, profits or balance sheets. By mapping this evidence, we gain an understanding of whether interventions target the production (supply-side) or consumption (demand-side) aspects of the system. This is helpful for identifying which \"cluster\" of policies have been more readily investigated in the academic literature, what the evidence says, and where there are gaps in evidence. The aims of this review were to synthesise the economics evidence on food system interventions designed to improve population health, to identify the most studied areas of the system, the economics methods used, and any trends in methodological choices based on the type of intervention. A search strategy to identify reviews published between 2012 and 2024 was applied to seven databases. The focus was on the whole population in high-income countries. Thirty-six reviews were identified covering 718 primary studies. There were 21 reviews focused on demand-side interventions, such as taxes and subsidies on sugar-sweetened beverages or foods high in salt, sugar and fat, and only four reviews that looked at solely supply-side interventions. Eleven reviews were on a mix of both demand and supply side interventions. We found that supply side (e.g., reformulation) interventions were more effective at altering dietary behaviours when compared to demand side interventions (e.g., labelling). Supply-side evaluations tended to use ex-ante methods for hypothetical interventions, while demand side evaluations used a mix of both ex-ante and ex-post designs. Synthesising the cost-effectiveness of the interventions across the reviews was challenging due to heterogeneity of methods applied. Due to the wide range of agents and sectors involved, a cost-benefit analysis from a societal perspective is the most recommended economic evaluation method. Further studies are needed to identify the most efficient mix of intervention components likely to achieve substantial health and economic impacts.\nSystematic review registration: https://www.crd.york.ac.uk/prospero/, Identifier CRD42022360714.\n...SEE MORE\n1\nVIEW MORE INFO",
+    "angle": "Health economics evidence for food system policy : a systematic review of reviews",
+    "teaser": "10.3389/FNUT.2025.1629814\nFood system interventions are needed for improving public health and to address health inequalities. Economics evidence enables an understanding of the costs associated with these interventions when…",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
+    "local_image": "images/market-feature.webp",
+    "image_alt": "Research notes and data",
+    "tags": [
+      "Research"
+    ],
+    "status": "metadata-only"
+  },
+  {
+    "id": "food-podcast",
+    "title": "Food for thought – eating our way to a sustainable future",
+    "date": "2025-10-15",
+    "type": "Podcast",
+    "source": "https://lnk.to/mOIzW4",
+    "category": "Sustainability",
+    "abstract": "Podcast appearance discussing how food choices connect with sustainability. Interview segment begins at approximately minute 13:12.",
+    "angle": "Food for thought: can dinner help change the world?",
+    "teaser": "From research to the dinner table: a conversation about why sustainable eating is more complicated—and more interesting—than a simple list of good and bad foods.",
+    "image": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=1200&q=85",
+    "image_alt": "Microphone ready for a podcast",
+    "tags": [
+      "Podcast",
+      "Sustainable diets"
+    ],
+    "status": "review-ready",
+    "verification_note": "Editorial draft grounded in the official Wellcome transcript.",
+    "transcript": "https://cms.wellcome.org/sites/default/files/2025-10/s3-e6-food-for-thought-eating-our-way-to-a-sustainable-future.pdf",
+    "authors": "Wellcome; presented by Alisha Wainwright, featuring Peter Scarborough and other guests",
+    "venue": "When Science Finds a Way podcast, Wellcome (2025)",
+    "local_image": "images/microphone.webp"
+  },
+  {
+    "id": "publication-fb00e5f85c49",
+    "title": "Podcast: Food for thought – eating our way to a sustainable future (my bit starts at minute 13:12)",
+    "date": "2025-10-15",
+    "type": "Research output",
+    "source": "https://lnk.to/mOIzW4",
+    "doi": "",
+    "category": "Research",
+    "abstract": "",
+    "angle": "Podcast: Food for thought – eating our way to a sustainable future (my bit starts at minute 13:12)",
+    "teaser": "Explore the research behind this recent output.",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
+    "local_image": "images/market-feature.webp",
+    "image_alt": "Research notes and data",
+    "tags": [
+      "Research"
+    ],
+    "status": "metadata-only"
+  },
+  {
+    "id": "wage-rigidity",
+    "title": "Why did we think wages are rigid for all those years?",
+    "date": "2025-09-08",
+    "type": "Working paper",
+    "source": "https://wrap.warwick.ac.uk/193097/",
+    "category": "Labour economics",
+    "abstract": "Using U.S. Current Population Survey data, this study finds that rounding in workers' reported wages exaggerates the spike at zero nominal wage growth. Adjusting for rounding shrinks the apparent share of unchanged wages from 15–20% to 7–12%, consistent with recent administrative-data estimates.",
+    "angle": "The wage freeze that wasn't quite what it seemed",
+    "teaser": "Economists have spent decades puzzling over why wages seem so hard to cut. Part of the mystery may lie not in employers' pay policies, but in how workers round the numbers when surveys ask about their earnings.",
+    "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=85",
+    "image_alt": "Calculator and financial paperwork on desk",
+    "tags": [
+      "Wages",
+      "Inflation",
+      "Measurement"
+    ],
+    "status": "verified-abstract",
+    "authors": "See-Yu Chan, Stephan Hobler and Thijs van Rens",
+    "venue": "Warwick Economics Research Papers, no. 1577 (2025)",
+    "local_image": "images/labour-city.webp"
+  },
+  {
     "id": "qualitative-process",
     "title": "The implementation of an intervention to promote sustainable and healthier food choices in online supermarkets: a qualitative process evaluation",
     "date": "2025-08-01",
@@ -203,25 +298,124 @@
     "local_image": "images/supermarket-shopper.webp"
   },
   {
-    "id": "house-of-lords",
-    "title": "Written evidence to the House of Lords Select Committee on Food, Diet and Obesity",
-    "date": "2024-10-24",
-    "type": "Policy evidence",
-    "source": "https://committees.parliament.uk/writtenevidence/129174/html/",
-    "category": "Food policy",
-    "abstract": "Written evidence provided to the House of Lords inquiry into food, diet and obesity. Exact evidence is linked from the Warwick publications profile.",
-    "angle": "Taking food research into Parliament",
-    "teaser": "Better diets aren't only an individual responsibility. Evidence to a House of Lords inquiry connects everyday food choices to the policy decisions that help shape them.",
-    "image": "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "British Parliament buildings",
+    "id": "publication-34c2a772ecad",
+    "title": "P78 The implementation of an intervention to promote sustainable and healthier food choices in online supermarkets: a qualitative process evaluation",
+    "date": "2025-08-01",
+    "type": "Research output",
+    "source": "https://doi.org/10.1136/jech-2025-ssmabstracts.154",
+    "doi": "10.1136/JECH-2025-SSMABSTRACTS.154",
+    "category": "Research",
+    "abstract": "",
+    "angle": "P78 The implementation of an intervention to promote sustainable and healthier food choices in online supermarkets: a qualitative process evaluation",
+    "teaser": "Explore the research behind this recent output.",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
+    "local_image": "images/market-feature.webp",
+    "image_alt": "Research notes and data",
     "tags": [
-      "Policy",
-      "Parliament"
+      "Research"
+    ],
+    "status": "metadata-only"
+  },
+  {
+    "id": "publication-5ed81ae7ba70",
+    "title": "P81 The use of eco-labels and price discounts to promote more sustainable online grocery purchases in the UK: a randomised controlled trial",
+    "date": "2025-08-01",
+    "type": "Research output",
+    "source": "https://doi.org/10.1136/jech-2025-ssmabstracts.157",
+    "doi": "10.1136/JECH-2025-SSMABSTRACTS.157",
+    "category": "Research",
+    "abstract": "",
+    "angle": "P81 The use of eco-labels and price discounts to promote more sustainable online grocery purchases in the UK: a randomised controlled trial",
+    "teaser": "Explore the research behind this recent output.",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
+    "local_image": "images/market-feature.webp",
+    "image_alt": "Research notes and data",
+    "tags": [
+      "Research"
+    ],
+    "status": "metadata-only"
+  },
+  {
+    "id": "pilot-online-groceries",
+    "title": "Promoting environmentally sustainable food purchases in online grocery shopping: insights from a pilot randomised controlled field trial",
+    "date": "2025-07-15",
+    "type": "Journal article",
+    "source": "https://doi.org/10.1186/s13104-025-07370-5",
+    "doi": "10.1186/s13104-025-07370-5",
+    "category": "Food choices",
+    "abstract": "The research team built a Chrome browser extension to deliver environmental eco-labels on a UK supermarket website. Of 504 screened, 161 were eligible and 57 installed the extension, with 22 shopping at least once. The study did not find a statistically significant difference in eco-scores of purchases, but established the feasibility of testing interventions without supermarket cooperation.",
+    "angle": "Could a browser extension change the weekly food shop?",
+    "teaser": "A small pilot put sustainability labels directly into a real online supermarket. The biggest discovery wasn't a dramatic change in buying—it was a new way to test shopping interventions without needing a retailer to take part.",
+    "image": "https://images.unsplash.com/photo-1601593768795-5c1c2b147f5f?auto=format&fit=crop&w=1200&q=85",
+    "image_alt": "Grocery shopping basket",
+    "tags": [
+      "Online shopping",
+      "Experiment",
+      "Eco-labels"
+    ],
+    "status": "verified-abstract",
+    "authors": "Helena Bentil, Oyinlola Oyebode, Peter Scarborough, Claire Thompson, Jessica Brock, Michael Clark, Martin White and Thijs van Rens",
+    "venue": "BMC Research Notes, volume 18, article 294 (2025)",
+    "local_image": "images/supermarket-shopper.webp"
+  },
+  {
+    "id": "publication-454ded0d5952",
+    "title": "Promoting environmentally sustainable food purchases in online grocery shopping : insights from a pilot randomised controlled field trial",
+    "date": "2025-07-15",
+    "type": "Research output",
+    "source": "https://figshare.warwick.ac.uk/articles/journal_contribution/Promoting_environmentally_sustainable_food_purchases_in_online_grocery_shopping_insights_from_a_pilot_randomised_controlled_field_trial/33901702",
+    "doi": "10.1186/S13104-025-07370-5",
+    "category": "Research",
+    "abstract": "10.1186/S13104-025-07370-5\nObjectiveIt remains unclear which interventions are effective in promoting more environmentally sustainable food choices within online grocery shopping environments. We set out to (1) use a plug-in (browser extension) to implement a pilot randomised controlled trial of eco-labels providing information on the environmental impact of specific food products, and (2) collect data to inform a larger trial investigating the effectiveness of eco-labels and other interventions promoting environmentally sustainable online food purchases. The plug-in was custom-built and active on a large UK supermarket website, accessed using the Google Chrome browser on a desktop or laptop.ResultsOf the 504 participants screened, 161 met eligibility criteria and were invited to participate in the study. 57 of these downloaded the plug-in (23 in the control group, 34 in the intervention group), of which 22 shopped at least once over the 1-month trial. There was no significant difference in average eco-score of purchases between the control and intervention groups (mean ± SD: 32 ± 13 vs. 41 ± 14; p = 0.22). 69/161 eligible participants responded to a follow-up survey and suggested technical support, reminders, greater incentives, and more information about eco-labels were needed for the full trial. We showed that it is feasible to evaluate online grocery shopping interventions without the collaboration of a supermarket using a web browser extension.Trial registrationThis pilot trial was not registered, as its main purpose was to test the implementation of the plugin and gather data useful for planning the main trial, which is registered under ISRCTN18800054 as of 27/03/2024.\n...SEE MORE\n1\nVIEW MORE INFO",
+    "angle": "Promoting environmentally sustainable food purchases in online grocery shopping : insights from a pilot randomised controlled field trial",
+    "teaser": "10.1186/S13104-025-07370-5\nObjectiveIt remains unclear which interventions are effective in promoting more environmentally sustainable food choices within online grocery shopping environments. We set out to (1) use a plug-in…",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
+    "local_image": "images/market-feature.webp",
+    "image_alt": "Research notes and data",
+    "tags": [
+      "Research"
+    ],
+    "status": "metadata-only"
+  },
+  {
+    "id": "sky-food-industry",
+    "title": "The food industry has a dirty secret—and it's making Britain poorer and unhealthier",
+    "date": "2025-04-26",
+    "type": "Media coverage",
+    "source": "https://news.sky.com/story/the-food-industry-has-a-dirty-secret-and-its-making-britain-poorer-and-unhealthier-13357511",
+    "category": "Food policy",
+    "abstract": "News media coverage concerning the health and economic impacts of the food industry.",
+    "angle": "The hidden costs behind the food we eat",
+    "teaser": "Cheap food can carry expensive consequences. This news feature examines the health and economic costs that don't appear on the supermarket receipt.",
+    "image": "https://images.unsplash.com/photo-1506617420156-8e4536971650?auto=format&fit=crop&w=1200&q=85",
+    "image_alt": "Grocery supermarket aisle",
+    "tags": [
+      "Food industry",
+      "Health"
     ],
     "status": "verified-source",
-    "authors": "Thijs van Rens",
-    "venue": "House of Lords Food, Diet and Obesity Committee, written evidence FDO0012 (2024)",
-    "local_image": "images/parliament.webp"
+    "authors": "Brad Young",
+    "venue": "Sky News, 29 April 2025",
+    "local_image": "images/green-fields.webp"
+  },
+  {
+    "id": "publication-b52878277907",
+    "title": "News article: The food industry has a dirty secret - and it's making Britain poorer and unhealthier",
+    "date": "2025-04-26",
+    "type": "Research output",
+    "source": "https://news.sky.com/story/money-news-personal-finance-consumer-mortgage-latest-13040934?postid=9490055#liveblog-body",
+    "doi": "",
+    "category": "Research",
+    "abstract": "",
+    "angle": "News article: The food industry has a dirty secret - and it's making Britain poorer and unhealthier",
+    "teaser": "Explore the research behind this recent output.",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
+    "local_image": "images/market-feature.webp",
+    "image_alt": "Research notes and data",
+    "tags": [
+      "Research"
+    ],
+    "status": "metadata-only"
   },
   {
     "id": "springer-field-trial",
@@ -245,47 +439,43 @@
     "local_image": "images/market-feature.webp"
   },
   {
-    "id": "food-podcast",
-    "title": "Food for thought – eating our way to a sustainable future",
-    "date": "2025-10-15",
-    "type": "Podcast",
-    "source": "https://lnk.to/mOIzW4",
-    "category": "Sustainability",
-    "abstract": "Podcast appearance discussing how food choices connect with sustainability. Interview segment begins at approximately minute 13:12.",
-    "angle": "Food for thought: can dinner help change the world?",
-    "teaser": "From research to the dinner table: a conversation about why sustainable eating is more complicated—and more interesting—than a simple list of good and bad foods.",
-    "image": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Microphone ready for a podcast",
+    "id": "publication-37362ac4f64c",
+    "title": "Blog post: New field trial explores what drives sustainable choices in online grocery shopping",
+    "date": "2024-11-18",
+    "type": "Research output",
+    "source": "https://communities.springernature.com/posts/driving-sustainable-choices-in-online-grocery-shopping-a-new-field-trial",
+    "doi": "",
+    "category": "Research",
+    "abstract": "",
+    "angle": "Blog post: New field trial explores what drives sustainable choices in online grocery shopping",
+    "teaser": "Explore the research behind this recent output.",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
+    "local_image": "images/market-feature.webp",
+    "image_alt": "Research notes and data",
     "tags": [
-      "Podcast",
-      "Sustainable diets"
+      "Research"
     ],
-    "status": "review-ready",
-    "verification_note": "Editorial draft grounded in the official Wellcome transcript.",
-    "transcript": "https://cms.wellcome.org/sites/default/files/2025-10/s3-e6-food-for-thought-eating-our-way-to-a-sustainable-future.pdf",
-    "authors": "Wellcome; presented by Alisha Wainwright, featuring Peter Scarborough and other guests",
-    "venue": "When Science Finds a Way podcast, Wellcome (2025)",
-    "local_image": "images/microphone.webp"
+    "status": "metadata-only"
   },
   {
-    "id": "sky-food-industry",
-    "title": "The food industry has a dirty secret—and it's making Britain poorer and unhealthier",
-    "date": "2025-04-26",
-    "type": "Media coverage",
-    "source": "https://news.sky.com/story/the-food-industry-has-a-dirty-secret-and-its-making-britain-poorer-and-unhealthier-13357511",
+    "id": "house-of-lords",
+    "title": "Written evidence to the House of Lords Select Committee on Food, Diet and Obesity",
+    "date": "2024-10-24",
+    "type": "Policy evidence",
+    "source": "https://committees.parliament.uk/writtenevidence/129174/html/",
     "category": "Food policy",
-    "abstract": "News media coverage concerning the health and economic impacts of the food industry.",
-    "angle": "The hidden costs behind the food we eat",
-    "teaser": "Cheap food can carry expensive consequences. This news feature examines the health and economic costs that don't appear on the supermarket receipt.",
-    "image": "https://images.unsplash.com/photo-1506617420156-8e4536971650?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Grocery supermarket aisle",
+    "abstract": "Written evidence provided to the House of Lords inquiry into food, diet and obesity. Exact evidence is linked from the Warwick publications profile.",
+    "angle": "Taking food research into Parliament",
+    "teaser": "Better diets aren't only an individual responsibility. Evidence to a House of Lords inquiry connects everyday food choices to the policy decisions that help shape them.",
+    "image": "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=85",
+    "image_alt": "British Parliament buildings",
     "tags": [
-      "Food industry",
-      "Health"
+      "Policy",
+      "Parliament"
     ],
     "status": "verified-source",
-    "authors": "Brad Young",
-    "venue": "Sky News, 29 April 2025",
-    "local_image": "images/green-fields.webp"
+    "authors": "Thijs van Rens",
+    "venue": "House of Lords Food, Diet and Obesity Committee, written evidence FDO0012 (2024)",
+    "local_image": "images/parliament.webp"
   }
 ]
