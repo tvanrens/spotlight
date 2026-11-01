@@ -1,5 +1,24 @@
 [
   {
+    "id": "publication-529f84a41c48",
+    "title": "A Systematic Review of Food Swap Interventions Used in Grocery Store Settings.",
+    "date": "2026-10-27",
+    "type": "Research output",
+    "source": "https://doi.org/10.1093/nutrit/nuag151",
+    "doi": "10.1093/NUTRIT/NUAG151",
+    "category": "Research",
+    "abstract": "10.1093/NUTRIT/NUAG151\nCONTEXT: Food swap interventions provide an approach to influence consumer food choices. However, evidence on their design and effectiveness has not yet been synthesized.\nOBJECTIVE: This review systematically synthesized the literature on food swap interventions in grocery settings by addressing the following questions: (1) What were the key characteristics of the food swap interventions examined in the literature, and what was their intended purpose? (2) Have food swap interventions been effective in changing behavior?\nDATA SOURCES, EXTRACTION, AND ANALYSIS: A search of MEDLINE, Scopus, and Web of Science up to January 23, 2025, was conducted to identify food swap intervention trials in grocery settings, with no limits on language or publication year. Covidence was used to screen titles, abstracts, and full-text articles in duplicate. Data were synthesized narratively.\nRESULTS: Eleven studies, published during 2006-2024, were included in the review. One intervention was implemented in a real grocery store, 3 in real online supermarkets, and 7 in simulated online supermarkets. Most included studies targeted adults with primary or partial responsibility for their household grocery shopping. All the swaps offered healthier alternatives to selected products. Outcomes examined included shopping basket item healthiness, energy content, saturated fatty acid (SFA) content, salt density, and sodium and sugar content. All but 1 study noted evidence that the studied interventions can change behavior. Two studies found significant improvements in overall nutritional quality. Salt/sodium reductions were seen in 2 studies, while reductions in sugar content were seen in 1 study but not in another study. Studies also demonstrated significant reductions in purchased energy content/density, and SFA.\nCONCLUSION: A range of food swap interventions have been studied, and most of those identified have been found to be effective in improving the healthiness of food purchases. No studies explored the potential of swap interventions to promote sustainable food choices, which could be a topic of future research.\nSYSTEMATIC REVIEW REGISTRATION: PROSPERO registration No. [CRD42024539803].\n...SEE MORE\nVIEW MORE INFO",
+    "angle": "A Systematic Review of Food Swap Interventions Used in Grocery Store Settings.",
+    "teaser": "10.1093/NUTRIT/NUAG151\nCONTEXT: Food swap interventions provide an approach to influence consumer food choices. However, evidence on their design and effectiveness has not yet been synthesized.\nOBJECTIVE: This review…",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
+    "local_image": "images/market-feature.webp",
+    "image_alt": "Research notes and data",
+    "tags": [
+      "Research"
+    ],
+    "status": "metadata-only"
+  },
+  {
     "id": "publication-3e40d2f3aafa",
     "title": "Response to the Dutch government consultation on the sugar tax (internetconsultatie suikerbelasting)",
     "date": "2026-09-09",
@@ -9,6 +28,25 @@
     "category": "Research",
     "abstract": "",
     "angle": "Response to the Dutch government consultation on the sugar tax (internetconsultatie suikerbelasting)",
+    "teaser": "Explore the research behind this recent output.",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
+    "local_image": "images/market-feature.webp",
+    "image_alt": "Research notes and data",
+    "tags": [
+      "Research"
+    ],
+    "status": "metadata-only"
+  },
+  {
+    "id": "publication-62f61548b266",
+    "title": "OP81 Evaluating the impact of community food shop membership on food insecurity and dietary quality: a natural experiment evaluation using quasi-random variation from a waitlist",
+    "date": "2026-09-01",
+    "type": "Research output",
+    "source": "https://doi.org/10.1136/jech-2026-ssmabstracts.81",
+    "doi": "10.1136/JECH-2026-SSMABSTRACTS.81",
+    "category": "Research",
+    "abstract": "",
+    "angle": "OP81 Evaluating the impact of community food shop membership on food insecurity and dietary quality: a natural experiment evaluation using quasi-random variation from a waitlist",
     "teaser": "Explore the research behind this recent output.",
     "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
     "local_image": "images/market-feature.webp",
@@ -456,26 +494,5 @@
       "Research"
     ],
     "status": "metadata-only"
-  },
-  {
-    "id": "house-of-lords",
-    "title": "Written evidence to the House of Lords Select Committee on Food, Diet and Obesity",
-    "date": "2024-10-24",
-    "type": "Policy evidence",
-    "source": "https://committees.parliament.uk/writtenevidence/129174/html/",
-    "category": "Food policy",
-    "abstract": "Written evidence provided to the House of Lords inquiry into food, diet and obesity. Exact evidence is linked from the Warwick publications profile.",
-    "angle": "Taking food research into Parliament",
-    "teaser": "Better diets aren't only an individual responsibility. Evidence to a House of Lords inquiry connects everyday food choices to the policy decisions that help shape them.",
-    "image": "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "British Parliament buildings",
-    "tags": [
-      "Policy",
-      "Parliament"
-    ],
-    "status": "verified-source",
-    "authors": "Thijs van Rens",
-    "venue": "House of Lords Food, Diet and Obesity Committee, written evidence FDO0012 (2024)",
-    "local_image": "images/parliament.webp"
   }
 ]
