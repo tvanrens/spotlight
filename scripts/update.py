@@ -203,7 +203,9 @@ def classify(p):
     if p.get('kind') in ('academic', 'popular'): return p['kind']
     title = (p.get('title') or '').lower()
     url = (p.get('source') or '').lower()
-    if title.startswith(POPULAR_PHRASES + ('video:',)) or 'thesciencebreaker' in url or any(t in url for t in ('/news/','/impact/','/blog/','/podcast/','/writtenevidence/')):
+    if (title.startswith(POPULAR_PHRASES + ('video:',))
+        or title.startswith('subsidise fruits and vegetables to encourage healthy and sustainable diets')
+        or any(t in url for t in ('thesciencebreaker', 'thescbr.brk', '/news/', '/impact/', '/blog/', '/podcast/', '/writtenevidence/'))):
         return 'popular'
     if any(t in url for t in ACADEMIC_HINTS) or canonical_doi(p.get('doi')):
         return 'academic'
@@ -339,6 +341,33 @@ def source_details(url):
         print('Metadata fetch failed:', url, str(e))
         return {}
 
+def popular_fallback(pub):
+    """Write a brief, conservative description using only the verified title/type.
+
+    Do not invent claims, quotes, results or facts that are not provided
+    by the original publication. This also works without API credits.
+    """
+    title = re.sub(r'^(?:news article|blog post|podcast|video)\s*:\s*', '',
+                   pub.get('title',''), flags=re.IGNORECASE).strip()
+    if not title:
+        return ''
+    low = pub.get('title','').lower()
+    if low.startswith('video:'):
+        category = 'video'
+    elif low.startswith('podcast:'):
+        category = 'podcast episode'
+    elif 'consultation' in low or 'internetconsultatie' in low:
+        category = 'consultation response'
+    elif 'written evidence' in low:
+        category = 'written evidence'
+    elif low.startswith('blog post:'):
+        category = 'blog post'
+    else:
+        category = 'article'
+    return (f'This {category} addresses “{title}”. '
+            'Follow the link to the original for the full discussion and context.')
+
+
 def excerpt(text, limit=25):
     # Short attributed source excerpts; don't copy a long copyrighted article.
     words = re.sub(r'\s+', ' ', text or '').strip().split()
@@ -404,6 +433,7 @@ def main():
         print('\n'.join(report))
         return
     pending=[]
+    skipped=[]
     # Avoid re-querying sources for the same known candidate twice in one run.
     for p in scraped:
         if any(same_work(p,old) for old in kept):
@@ -428,8 +458,16 @@ def main():
                 kept.append(p)
                 audit.append(('PROPOSED popular link',p['title'],p['date'],p['source']))
                 continue
-            p['status']='needs-original-introduction'
-            p['review_reason']='Original article introduction unavailable (link / login / JS or redirect)'
+            # No extractable intro? Still list this popular output with
+            # a clearly identified, deliberately conservative summary.
+            p['teaser'] = popular_fallback(p)
+            if p['teaser']:
+                p['status']='popular-title-summary-needs-review'
+                kept.append(p)
+                audit.append(('PROPOSED popular summary (title only; review)',p['title'],p['date'],p['source']))
+                continue
+            p['status']='needs-title-review'
+            p['review_reason']='Missing usable publication title'
         else:
             p['type']='Academic publication'
             crossref = doi_details(p.get('doi'))
@@ -438,6 +476,13 @@ def main():
             p['venue'] = crossref.get('venue') or openalex.get('venue') or p['venue']
             fulltext, basis = source_material(p,crossref,openalex)
             p['evidence_basis'] = basis
+            if not fulltext:
+                # Insufficiently documented academic outputs are omitted.
+                # Record the omission in discovery-report.md but do not
+                # retain it as an item awaiting manual intervention.
+                skipped.append(p)
+                audit.append(('SKIPPED: insufficient source text', p['title'], p['date'], p['source']))
+                continue
             if good_metadata(p) and fulltext and os.getenv('OPENAI_API_KEY'):
                 try:
                     p['abstract'] = max([p.get('abstract',''),crossref.get('abstract',''),
@@ -464,7 +509,7 @@ def main():
         pending.append(p)
         audit.append(('NEEDS REVIEW: '+p.get('review_reason','unknown'),p['title'],p['date'],p['source']))
     # Do not carry stale duplicates into the register.
-    pending = [p for p in previous if not any(same_work(p,x) for x in kept+pending)]+pending
+    pending = [p for p in previous if not any(same_work(p,x) for x in kept+pending+skipped)]+pending
     kept.sort(key=lambda p:p['date'],reverse=True)
     pending.sort(key=lambda p:p.get('date',''),reverse=True)
     candidates_path.write_text(json.dumps(pending,indent=2,ensure_ascii=False)+'\n')
@@ -478,7 +523,8 @@ def main():
            f'Generated: {today.isoformat()} (publication cutoff {cutoff.isoformat()})','',
            f'- Warwick candidate records: **{len(scraped)}**',
            f'- Proposed website stories (including existing): **{len(kept)}**',
-           f'- Pending records requiring human review: **{len(pending)}**','',
+           f'- Pending records requiring human review: **{len(pending)}**',
+           f'- Academic outputs skipped for insufficient source text: **{len(skipped)}**','',
            'Status | Publication | Date | Source','--- | --- | --- | ---']
     for status,title,date,source in audit:
         title=title.replace('|','/').replace('\n',' ')
