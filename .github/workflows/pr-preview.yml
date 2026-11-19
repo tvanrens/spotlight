@@ -1,0 +1,34 @@
+name: Browser preview for pull requests
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  preview-link:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post a browser preview for this exact revision
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const number = context.issue.number;
+            const sha = context.payload.pull_request.head.sha;
+            const url = 'https://raw.githack.com/' + owner + '/' + repo + '/' + sha + '/index.html';
+            const marker = '<!-- spotlight-preview-url -->';
+            const body = marker + '\n### Preview proposed website\n\n' +
+              '**[Open the browser preview](' + url + ')**\n\n' +
+              'This link shows the files from commit ' + sha.slice(0,12) + ' on this pull request, ' +
+              'including styling, images and article data. It does **not** change the published GitHub Pages homepage.\n\n' +
+              '**Note:** The preview is served through the third-party raw.githack.com service and is publicly accessible. ' +
+              'Do not use it for confidential material. The link updates when this PR is revised.';
+            const comments = await github.paginate(github.rest.issues.listComments, {owner,repo,issue_number:number});
+            const previous = comments.find(c => c.user.type === 'Bot' && c.body?.includes(marker));
+            if (previous) {
+              await github.rest.issues.updateComment({owner,repo,comment_id:previous.id,body});
+            } else {
+              await github.rest.issues.createComment({owner,repo,issue_number:number,body});
+            }
