@@ -143,21 +143,60 @@ def extract_source(url):
  except Exception as ex:
   print('Source fetch failed:',url,ex);return ''
 
-def draft(pub,text):
- from openai import OpenAI
- client=OpenAI()
- system=('You are a careful science journalist. Write 500–1000 words of readable UK English with concrete explanations, limited jargon and an engaging headline. '
- 'Only state numerical results and causal claims actually supported by the supplied source. Clearly distinguish observational associations, trials and intentions. '
- 'Do not invent numbers, quotes, conclusions, image provenance, or dates. If source lacks enough evidence, respond with JSON {"skip":true}. '
- 'Output JSON keys: angle (catchy 5–12 word headline), teaser (under 100 words), paragraphs (array of 7–11 substantial paragraphs), category, tags (array of up to 3 topical hashtags without #).')
- user=json.dumps({'title':pub['title'],'date':pub['date'],'record_abstract':pub['abstract'],'original_url':pub['source'],'source_text':text},ensure_ascii=False)
- r=client.chat.completions.create(model=os.getenv('OPENAI_MODEL','gpt-4.1-mini'),response_format={'type':'json_object'},messages=[{'role':'system','content':system},{'role':'user','content':user}])
- j=json.loads(r.choices[0].message.content)
- if j.get('skip'):return None
- paragraphs=j.get('paragraphs',[])
- count=sum(len(x.split()) for x in paragraphs)
- if not 500<=count<=1000 or len(j.get('teaser','').split())>=100:raise ValueError(f'Unexpected content length: {count} words')
- return j
+def draft(pub, text):
+    """Draft a grounded 300–1000 word feature; revise once only if outside range."""
+    from openai import OpenAI
+    client = OpenAI()
+    system = (
+        'You are a careful science journalist. Write 300–1000 words of readable '
+        'UK English, preferably 450–700 words where the evidence supports it. '
+        'Do not pad a summary or invent details to meet a word count. '
+        'Only state numerical results and causal claims supported by the supplied source. '
+        'Clearly distinguish observational associations, trials, protocols and intentions. '
+        'For protocols, discuss plans, not unreported results. If the source is an abstract only, '
+        'make clear the limits of that evidence. Do not invent numbers, quotes, conclusions, '
+        'image provenance or dates. If insufficient, output JSON {"skip":true}. '
+        'Output JSON keys: angle (headline), teaser (under 100 words), '
+        'paragraphs (array of paragraphs), category, tags (up to 3 topics).'
+    )
+    user = json.dumps({
+        'title': pub['title'], 'date': pub['date'],
+        'record_abstract': pub.get('abstract',''),
+        'original_url': pub['source'], 'source_text': text,
+        'evidence_basis': pub.get('evidence_basis','')
+    }, ensure_ascii=False)
+    def request(messages):
+        response = client.chat.completions.create(
+            model=os.getenv('OPENAI_MODEL','gpt-4.1-mini'),
+            response_format={'type':'json_object'}, messages=messages)
+        return json.loads(response.choices[0].message.content)
+    messages = [{'role':'system','content':system},{'role':'user','content':user}]
+    result = request(messages)
+    if result.get('skip'): return None
+    for attempt in range(2):
+        paragraphs = result.get('paragraphs', [])
+        if not isinstance(paragraphs,list) or not all(isinstance(p,str) for p in paragraphs):
+            raise ValueError('Generated paragraphs are not a list of text')
+        count = sum(len(p.split()) for p in paragraphs)
+        if 300 <= count <= 1000 and 0 < len(result.get('teaser','').split()) < 100:
+            return result
+        if attempt:
+            raise ValueError(f'Generated story still outside 300–1000 words: {count}')
+        # A second attempt is only necessary for genuinely out-of-range
+        # drafts; no revision for 300–499 words.
+        messages += [
+            {'role':'assistant','content':json.dumps(result,ensure_ascii=False)},
+            {'role':'user','content':(
+                f'The draft has {count} words. Revise it to 300–1000 words '
+                '(aim 450–700 only if the supplied evidence warrants this). '
+                'Retain the original citation and avoid repetition, filler or '
+                'unsupported details. Preserve the same JSON schema; '
+                'keep the teaser below 100 words.'
+            )}
+        ]
+        result = request(messages)
+        if result.get('skip'): return None
+    return None
 
 
 # Published stories remain the authoritative editorial source. Scraped candidates are
@@ -203,7 +242,8 @@ def classify(p):
     if p.get('kind') in ('academic', 'popular'): return p['kind']
     title = (p.get('title') or '').lower()
     url = (p.get('source') or '').lower()
-    if (title.startswith(POPULAR_PHRASES + ('video:',))
+    if (title.startswith('would you like a food parcel or supermarket gift card?')
+        or title.startswith(POPULAR_PHRASES + ('video:',))
         or title.startswith('subsidise fruits and vegetables to encourage healthy and sustainable diets')
         or any(t in url for t in ('thesciencebreaker', 'thescbr.brk', '/news/', '/impact/', '/blog/', '/podcast/', '/writtenevidence/'))):
         return 'popular'
@@ -386,7 +426,7 @@ def main():
         if not cutoff <= datetime.date.fromisoformat(p['date']) <= today: continue
         p['kind'] = classify(p)
         if p['kind'] == 'academic' and not (p['id'] in articles and
-                 500 <= len(' '.join(articles[p['id']]).split()) <= 1000): continue
+                 300 <= len(' '.join(articles[p['id']]).split()) <= 1000): continue
         if p['kind'] == 'popular' and not p.get('source'): continue
         if any(same_work(p,q) for q in kept): continue
         kept.append(p)
@@ -434,6 +474,8 @@ def main():
         return
     pending=[]
     skipped=[]
+    auto_fixed=[]
+    editorial=[]
     # Avoid re-querying sources for the same known candidate twice in one run.
     for p in scraped:
         if any(same_work(p,old) for old in kept):
@@ -464,7 +506,8 @@ def main():
             if p['teaser']:
                 p['status']='popular-title-summary-needs-review'
                 kept.append(p)
-                audit.append(('PROPOSED popular summary (title only; review)',p['title'],p['date'],p['source']))
+                editorial.append(p)
+                audit.append(('EDITORIAL REVIEW: popular title-only description',p['title'],p['date'],p['source']))
                 continue
             p['status']='needs-title-review'
             p['review_reason']='Missing usable publication title'
@@ -495,7 +538,8 @@ def main():
                         articles[p['id']] = generated['paragraphs']
                         p['status']='ai-draft-needs-review'
                         kept.append(p)
-                        audit.append(('PROPOSED academic story ('+basis+')',p['title'],p['date'],p['source']))
+                        auto_fixed.append(p)
+                        audit.append(('AUTOMATICALLY PREPARED: academic story ('+basis+')',p['title'],p['date'],p['source']))
                         continue
                 except Exception as ex:
                     p['review_reason']='Draft generation failed: '+str(ex)[:200]
@@ -507,7 +551,8 @@ def main():
                 p['review_reason']='OPENAI_API_KEY secret unavailable'
             p['status']='needs-source-or-metadata-review'
         pending.append(p)
-        audit.append(('NEEDS REVIEW: '+p.get('review_reason','unknown'),p['title'],p['date'],p['source']))
+        editorial.append(p)
+        audit.append(('EDITORIAL REVIEW: '+p.get('review_reason','unknown'),p['title'],p['date'],p['source']))
     # Do not carry stale duplicates into the register.
     pending = [p for p in previous if not any(same_work(p,x) for x in kept+pending+skipped)]+pending
     kept.sort(key=lambda p:p['date'],reverse=True)
@@ -524,7 +569,9 @@ def main():
            f'- Warwick candidate records: **{len(scraped)}**',
            f'- Proposed website stories (including existing): **{len(kept)}**',
            f'- Pending records requiring human review: **{len(pending)}**',
-           f'- Academic outputs skipped for insufficient source text: **{len(skipped)}**','',
+           f'- Academic outputs skipped for insufficient source text: **{len(skipped)}**',
+           f'- Automatically prepared academic stories: **{len(auto_fixed)}**',
+           f'- Editorial checks (including proposed popular summaries): **{len(editorial)}**','',
            'Status | Publication | Date | Source','--- | --- | --- | ---']
     for status,title,date,source in audit:
         title=title.replace('|','/').replace('\n',' ')
