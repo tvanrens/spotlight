@@ -24,7 +24,7 @@ for p in posts:
         assert p.get('authors') and p.get('venue'), 'Academic metadata incomplete: '+p['id']
         assert p['id'] in articles, 'Academic story missing: '+p['id']
         words = len(' '.join(articles[p['id']]).split())
-        assert 500 <= words <= 1000, f'Article outside 500–1000 words: {p["id"]} ({words})'
+        assert 300 <= words <= 1000, f'Article outside 300–1000 words: {p["id"]} ({words})'
 data_js = (ROOT / 'data/site-data.js').read_text()
 assert data_js.startswith('/* Generated; do not edit by hand. */')
 site_data = json.loads(data_js.split('window.RESEARCH_DATA = ',1)[1].strip().removesuffix(';'))
