@@ -35,4 +35,18 @@ assert same_work({"title":"Podcast: Food for thought – eating our way to a sus
 assert same_work({"title":"P81 The use of eco-labels and price discounts to promote sustainable grocery purchases"},{"title":"The use of eco-labels and price discounts to promote sustainable grocery purchases"})
 assert classify({"title":"News article: Healthy food", "source":"https://www.cnbc.com/abc"})=="popular"
 assert classify({"title":"Delayed adjustment", "source":"https://doi.org/10.1111/jmcb.13011", "doi":"10.1111/jmcb.13011"})=="academic"
+
+from scripts.update import popular_fallback, source_material
+assert classify({"title":"Subsidise fruits and vegetables to encourage healthy and sustainable diets",
+                 "source":"https://doi.org/10.25250/thescbr.brk710",
+                 "doi":"10.25250/thescbr.brk710"}) == "popular"
+assert classify({"title":"Video: The SALIENT Sufra Food Bank Trial",
+                 "source":"https://www.youtube.com/watch?v=fbXL9Yd-J1c"}) == "popular"
+intro = popular_fallback({"title":"Written evidence to the House of Lords Select Committee on Food, Diet and Obesity"})
+assert "written evidence" in intro and "House of Lords" in intro
+assert "results show" not in intro.lower()
+assert "consultation response" in popular_fallback({
+    "title":"Response to the Dutch government consultation on the sugar tax"})
+assert source_material({"source":"","abstract":""}) == ("", "insufficient public source text")
+
 print("Scraper regression tests passed")
