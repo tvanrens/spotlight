@@ -102,31 +102,164 @@ def draft(pub,text):
  if not 500<=count<=1000 or len(j.get('teaser','').split())>=100:raise ValueError(f'Unexpected content length: {count} words')
  return j
 
+
+# Published stories remain the authoritative editorial source. Scraped candidates are
+# suggestions only; they never become public cards until their content is complete.
+import unicodedata
+from difflib import SequenceMatcher
+
+POPULAR_HOSTS = ('ox.ac.uk', 'warwick.ac.uk', 'wellcome.org', 'sky.com',
+                 'skynews.com', 'committees.parliament.uk', 'nature.com')
+POPULAR_PHRASES = ('podcast:', 'blog post:', 'news article:', 'written evidence',
+                   'policy consultation', 'internetconsultatie', 'response to the')
+ACADEMIC_HINTS = ('doi.org/', 'pubmed.', 'journals.', 'academic.oup.com',
+                  'frontiersin.org', 'springer.com', 'ssrn.com')
+BANNED_TEASERS = ('explore the research behind', '...see more', 'view more info')
+
+def canonical_doi(value):
+    v = str(value or '').strip().lower()
+    v = re.sub(r'^https?://(?:dx\.)?doi\.org/', '', v)
+    return v.rstrip('.,;')
+
+def normalize_title(title):
+    s = unicodedata.normalize('NFKD', title or '').lower()
+    s = re.sub(r'\b(p\d{1,3}|op\d{1,3})\s+', '', s)
+    s = re.sub(r'[^a-z0-9 ]', ' ', s)
+    s = re.sub(r'\s+', ' ', s).strip()
+    for prefix in ('podcast ', 'blog post ', 'news article '):
+        if s.startswith(prefix): s = s[len(prefix):]
+    return s
+
+def same_work(a, b):
+    da, db = canonical_doi(a.get('doi')), canonical_doi(b.get('doi'))
+    if da and db and da == db: return True
+    ta, tb = normalize_title(a.get('title')), normalize_title(b.get('title'))
+    if not ta or not tb: return False
+    if ta == tb: return True
+    # Prefixes such as P81 / OP81 and minor wording differences are common
+    # in Warwick's publication records.
+    return SequenceMatcher(None, ta, tb).ratio() >= 0.91
+
+def classify(p):
+    if p.get('kind') in ('academic', 'popular'): return p['kind']
+    title = (p.get('title') or '').lower()
+    url = (p.get('source') or '').lower()
+    if title.startswith(POPULAR_PHRASES) or any(t in url for t in ('/news/','/impact/','/blog/','/podcast/','/writtenevidence/')):
+        return 'popular'
+    if any(t in url for t in ACADEMIC_HINTS) or canonical_doi(p.get('doi')):
+        return 'academic'
+    if any(t in url for t in POPULAR_HOSTS): return 'popular'
+    return 'academic'
+
+def good_metadata(p):
+    a = (p.get('authors') or '').strip()
+    v = (p.get('venue') or '').strip()
+    return bool(a and v and 'to be verified' not in (a+' '+v).lower())
+
+def good_teaser(p):
+    t = (p.get('teaser') or '').strip()
+    return bool(20 <= len(t.split()) < 100 and not any(b in t.lower() for b in BANNED_TEASERS)
+                and not t.lower().startswith(('10.', 'doi:', 'context:')))
+
+def source_details(url):
+    """Return publisher-supplied description, byline and venue when available.
+    Never assign an unverified individual author."""
+    try:
+        resp = requests.get(url, timeout=25, headers={'User-Agent':'Mozilla/5.0'})
+        if not resp.ok or 'html' not in resp.headers.get('content-type','').lower(): return {}
+        soup = BeautifulSoup(resp.text, 'html.parser')
+        def meta(*names):
+            for name in names:
+                tag = soup.find('meta', attrs={'name':name}) or soup.find('meta', attrs={'property':name})
+                if tag and tag.get('content'): return tag['content'].strip()
+            return ''
+        description = meta('description','og:description','twitter:description')
+        author = meta('citation_author','author','article:author')
+        venue = meta('citation_journal_title','citation_conference_title','og:site_name')
+        node = soup.find('article') or soup.find('main') or soup
+        paragraphs = [p.get_text(' ', strip=True) for p in node.find_all('p')]
+        intro = next((p for p in paragraphs if len(p.split()) >= 18), '')
+        return {'intro':intro or description,'authors':author,'venue':venue}
+    except Exception as e:
+        print('Metadata fetch failed:', url, str(e))
+        return {}
+
+def excerpt(text, limit=25):
+    # Short attributed source excerpts; don't copy a long copyrighted article.
+    words = re.sub(r'\s+', ' ', text or '').strip().split()
+    return ' '.join(words[:limit]) + ('…' if len(words)>limit else '')
+
 def main():
- existing=json.loads(PUB.read_text());article=json.loads(ARTICLES.read_text());known={p.get('doi') or p['title'].lower():p for p in existing}
- try:texts,links=crawl();found=parse(texts,links)
- except Exception as ex:print('Warwick crawl failed; keeping existing content:',repr(ex));found={}
- print(f'Found {len(found)} recent candidate records')
- for item in found.values():
-  key=item.get('doi') or item['title'].lower()
-  if key in known:continue
-  known[key]=item
- today=datetime.date.today();cutoff=today.replace(year=today.year-2)
- kept=[p for p in known.values() if cutoff<=datetime.date.fromisoformat(p['date'])<=today]
- for p in kept:
-  if p['id'] in article or not os.getenv('OPENAI_API_KEY'):continue
-  text=extract_source(p['source'])
-  if len(text)<1300 and len(p.get('abstract',''))<850:
-   print('Insufficient source information; no invented article:',p['title']);continue
-  try:
-   result=draft(p,text)
-   if result:
-    for key in ('angle','teaser','category','tags'):p[key]=result[key]
-    article[p['id']]=result['paragraphs'];p['status']='ai-draft-needs-review'
-  except Exception as ex:print('Article generation skipped:',p['title'],ex)
- kept.sort(key=lambda p:p['date'],reverse=True)
- PUB.write_text(json.dumps(kept,indent=2,ensure_ascii=False)+'\n')
- ARTICLES.write_text(json.dumps(article,indent=2,ensure_ascii=False)+'\n')
- (ROOT/'data/site-data.js').write_text('/* Generated; do not edit by hand. */\nwindow.RESEARCH_DATA = '+json.dumps({'publications':kept,'articles':article},ensure_ascii=False).replace('</','<\\/')+';\n')
- print(f'Prepared data for editorial review: {len(kept)} recent outputs, {len(article)} complete articles')
-if __name__=='__main__':main()
+    published = json.loads(PUB.read_text())
+    articles = json.loads(ARTICLES.read_text())
+    candidates_path = ROOT/'data/candidates.json'
+    previous = json.loads(candidates_path.read_text()) if candidates_path.exists() else []
+    today = datetime.date.today()
+    cutoff = today.replace(year=today.year-2)
+    # Retain approved, complete, unique articles; avoid changing their copy.
+    kept = []
+    for p in published:
+        if not cutoff <= datetime.date.fromisoformat(p['date']) <= today: continue
+        p['kind'] = classify(p)
+        if p['kind'] == 'academic' and not (p['id'] in articles and
+                 500 <= len(' '.join(articles[p['id']]).split()) <= 1000): continue
+        if p['kind'] == 'popular' and not p.get('source'): continue
+        if any(same_work(p, q) for q in kept): continue
+        kept.append(p)
+    try:
+        texts, links = crawl()
+        scraped = list(parse(texts, links).values())
+    except Exception as ex:
+        print('Warwick crawl failed; retaining existing stories:', repr(ex))
+        scraped = []
+    print('New Warwick records discovered:', len(scraped))
+    pending = []
+    for p in scraped:
+        if any(same_work(p, old) for old in kept): continue
+        if any(same_work(p, old) for old in pending): continue
+        p['kind'] = classify(p)
+        details = source_details(p['source'])
+        p['authors'] = details.get('authors','')
+        p['venue'] = details.get('venue','')
+        if p['kind'] == 'popular':
+            # No AI article: use a short source excerpt and link to the original.
+            intro = details.get('intro','')
+            if intro:
+                p['teaser'] = excerpt(intro)
+                p['status'] = 'popular-source-excerpt'
+            else:
+                p['status'] = 'needs-source-review'
+            p['angle'] = p['title']
+            p['type'] = 'Popular writing'
+            if p['status'] == 'popular-source-excerpt' and good_metadata(p):
+                kept.append(p)
+                continue
+        else:
+            source_text = extract_source(p['source'])
+            if good_metadata(p) and len(source_text) >= 1300 and os.getenv('OPENAI_API_KEY'):
+                try:
+                    generated = draft(p, source_text)
+                    if generated:
+                        for key in ('angle','teaser','tags'): p[key] = generated[key]
+                        articles[p['id']] = generated['paragraphs']
+                        p['status'] = 'ai-draft-needs-review'
+                        if good_teaser(p):
+                            kept.append(p)
+                            continue
+                except Exception as ex:
+                    print('Draft needs manual attention:', p['title'], repr(ex))
+            p['status'] = 'needs-source-or-metadata-review'
+        pending.append(p)
+    # Store source candidates for review, not on the public site.
+    pending = [p for p in previous if not any(same_work(p, x) for x in kept + pending)] + pending
+    kept.sort(key=lambda p:p['date'], reverse=True)
+    candidates_path.write_text(json.dumps(pending,indent=2,ensure_ascii=False)+'\n')
+    PUB.write_text(json.dumps(kept,indent=2,ensure_ascii=False)+'\n')
+    ARTICLES.write_text(json.dumps(articles,indent=2,ensure_ascii=False)+'\n')
+    (ROOT/'data/site-data.js').write_text(
+        '/* Generated; do not edit by hand. */\nwindow.RESEARCH_DATA = '+
+        json.dumps({'publications':kept,'articles':articles},ensure_ascii=False).replace('</','<\\/')+';\n')
+    print(f'Prepared {len(kept)} unique stories and {len(pending)} source candidates for PR approval.')
+
+if __name__ == '__main__':
+    main()
