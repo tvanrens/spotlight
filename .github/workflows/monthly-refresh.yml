@@ -30,8 +30,9 @@ jobs:
           body: |
             **Not yet published.** Review the sources, factual claims, article lengths, images and links.
             When you are satisfied, select **Merge pull request** to publish via GitHub Pages.
-            New or insufficiently sourced outputs should remain labelled as briefs until verified.
+            Only verified completed academic stories and short excerpts of popular writing are eligible for publication. Inspect `data/candidates.json` for excluded/incomplete candidates, check bibliographic credits and image relevance, and approve the merge only after editing.
           add-paths: |
             data/publications.json
             data/articles.json
             data/site-data.js
+            data/candidates.json
