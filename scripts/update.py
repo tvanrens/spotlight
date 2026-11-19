@@ -356,6 +356,17 @@ def main():
         scraped = []
         audit.append(('ERROR','Warwick source could not be parsed; existing publications retained',str(ex),''))
     print('Unique recent records from Warwick:',len(scraped))
+    if os.getenv('DISCOVERY_ONLY') == '1':
+        report=['# Warwick four-year discovery diagnostic','',
+                'Date: '+today.isoformat(),'',
+                'Candidate records: '+str(len(scraped)),'',
+                '| Date | Output | Source |','|---|---|---|']
+        for pub in sorted(scraped,key=lambda x:x['date'],reverse=True):
+            report.append('| '+pub['date']+' | '+pub['title'].replace('|','/')+
+                          ' | '+pub['source']+' |')
+        report_path.write_text('\n'.join(report)+'\n')
+        print('\n'.join(report))
+        return
     pending=[]
     # Avoid re-querying sources for the same known candidate twice in one run.
     for p in scraped:
