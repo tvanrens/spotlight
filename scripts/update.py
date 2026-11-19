@@ -205,21 +205,83 @@ def good_teaser(p):
                 and not t.lower().startswith(('10.', 'doi:', 'context:')))
 
 def doi_details(doi):
-    """Retrieve indexed academic attribution instead of inventing a byline."""
+    """Crossref journal metadata, including abstracts where available."""
     doi = canonical_doi(doi)
     if not doi: return {}
     try:
         response = requests.get('https://api.crossref.org/works/'+doi,
-                                timeout=20, headers={'User-Agent':'ResearchSpotlight/1.0 (academic bibliography)'})
+                                timeout=16, headers={'User-Agent':'ResearchSpotlight/1.0 (tvanrens@gmail.com)'})
         if not response.ok: return {}
         msg = response.json().get('message',{})
         authors = ', '.join(' '.join(filter(None,[a.get('given',''),a.get('family','')]))
                             for a in msg.get('author',[]))
         venue = (msg.get('container-title') or [''])[0]
-        return {'authors':authors, 'venue':venue}
+        abstract_html = BeautifulSoup(msg.get('abstract',''), 'html.parser')
+        abstract = abstract_html.get_text(' ',strip=True)
+        return {'authors':authors,'venue':venue,'abstract':abstract,
+                'publisher':msg.get('publisher',''),'doi':doi}
     except Exception as e:
         print('Crossref lookup failed:',doi,str(e))
         return {}
+
+
+def openalex_details(pub):
+    """OpenAlex can resolve DOI metadata and open-access full-text links."""
+    from urllib.parse import quote
+    doi=canonical_doi(pub.get('doi'))
+    title=pub.get('title','')
+    urls=[]
+    if doi: urls.append('https://api.openalex.org/works/https://doi.org/'+quote(doi,safe='/'))
+    if title: urls.append('https://api.openalex.org/works?search='+quote(title)+'&per-page=5')
+    for url in urls:
+        try:
+            response=requests.get(url,timeout=18,headers={'User-Agent':'ResearchSpotlight/1.0'})
+            if not response.ok: continue
+            payload=response.json()
+            works=payload.get('results',[]) if 'results' in payload else [payload]
+            for w in works:
+                if not same_work(pub, {'title':w.get('display_name',''),
+                                       'doi':w.get('doi','')}): continue
+                authors=', '.join(a.get('author',{}).get('display_name','')
+                                  for a in w.get('authorships',[]) if a.get('author',{}).get('display_name'))
+                source=(w.get('primary_location') or {}).get('source') or {}
+                venue=source.get('display_name','')
+                inv=w.get('abstract_inverted_index') or {}
+                terms=[(position,word) for word,positions in inv.items() for position in positions]
+                abstract=' '.join(word for _,word in sorted(terms))[:12000]
+                oa=w.get('best_oa_location') or {}
+                pdf=oa.get('pdf_url') or ''
+                return {'authors':authors,'venue':venue,'abstract':abstract,
+                        'pdf_url':pdf if pdf.startswith('https://') else ''}
+        except Exception as e:
+            print('OpenAlex lookup failed:',str(e))
+    return {}
+
+
+def source_material(pub, crossref=None, openalex=None):
+    """Prefer full text, fall back to descriptive abstracts with explicit limitations."""
+    crossref=crossref or {}
+    openalex=openalex or {}
+    sources=[pub.get('source','')]
+    oa_pdf=openalex.get('pdf_url','')
+    if oa_pdf and oa_pdf not in sources: sources.append(oa_pdf)
+    candidates=[]
+    for link in sources[:2]:
+        if not link: continue
+        content=extract_source(link)
+        if content: candidates.append((len(content),content,link))
+    if candidates:
+        length,text,url=max(candidates)
+        if length>=1900: return text, 'full-text candidate ('+url+')'
+    abstract=max([pub.get('abstract',''),crossref.get('abstract',''),
+                  openalex.get('abstract','')],key=len)
+    # An abstract can support a careful general-audience summary, but the
+    # generated article must never invent effects or imply full-text review.
+    if len(abstract)>=650: return abstract, 'abstract only'
+    if candidates and max(x[0] for x in candidates)>=1100:
+        return max(candidates)[1], 'partial source text'
+    return '', 'insufficient public source text'
+
 
 def choose_image(p):
     """Reuse existing local editorial images; never auto-publish an external hotlink."""
