@@ -50,3 +50,13 @@ assert "consultation response" in popular_fallback({
 assert source_material({"source":"","abstract":""}) == ("", "insufficient public source text")
 
 print("Scraper regression tests passed")
+
+assert classify({
+    "title": "Would you like a food parcel or supermarket gift card? Results from a trial testing what happens when you give people a choice of support in a food bank setting",
+    "source": "https://www.liverpool.ac.uk/population-health/about/public-health-policy-and-systems/salient-sufra/"
+}) == "popular"
+from scripts.update import draft
+import inspect
+implementation = inspect.getsource(draft)
+assert "300 <= count <= 1000" in implementation
+assert "if attempt:" in implementation
