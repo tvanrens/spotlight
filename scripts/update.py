@@ -11,62 +11,105 @@ from dateutil import parser as dateparser
 ROOT=Path(__file__).resolve().parents[1]
 PROFILE='https://profiles.warwick.ac.uk/ecslak-thijs-van-rens/publications'
 PUB=ROOT/'data/publications.json'; ARTICLES=ROOT/'data/articles.json'
-TYPES=['JOURNAL ARTICLE','PREPRINT / WORKING PAPER','CONFERENCE','INTERNET PUBLICATION','MEDIA','BOOK','CHAPTER','OTHER','REPORT']
+TYPES=['JOURNAL ARTICLE','PREPRINT / WORKING PAPER','PREPRINT','WORKING PAPER','CONFERENCE','INTERNET PUBLICATION','MEDIA','BOOK','BOOK CHAPTER','CHAPTER','OTHER','REPORT','WRITTEN EVIDENCE']
 DATE_RE=re.compile(r'(?<!\d)(\d{1,2}\s+[A-Z][a-z]{2,8}\s+20\d\d|[A-Z][a-z]{2,8}\s+20\d\d)(?!\d)')
 
 def crawl():
- from playwright.sync_api import sync_playwright
- texts=[]; links={}
- with sync_playwright() as p:
-  browser=p.chromium.launch(headless=True)
-  page=browser.new_page(user_agent='Mozilla/5.0 (compatible; ResearchStoriesBot/1.0; personal academic publication digest)')
-  page.goto(PROFILE,wait_until='domcontentloaded',timeout=60000)
-  page.wait_for_timeout(2200)
-  for i in range(8):
-   content=page.locator('body').inner_text(timeout=15000)
-   if content in texts:break
-   texts.append(content)
-   for a in page.locator('a[href]').all():
-    try:
-     title=a.inner_text(timeout=500).strip();href=a.get_attribute('href')
-     if title and href and len(title)>24 and not title.startswith('DOI'): links[title.lower()]=urljoin(PROFILE,href)
-    except Exception:pass
-   buttons=page.get_by_role('button',name='Next',exact=True)
-   advanced=False
-   for btn in buttons.all():
-    if btn.is_enabled():
-     try:btn.click(timeout=2500);page.wait_for_timeout(1200);advanced=True;break
-     except Exception:pass
-   if not advanced:break
-  browser.close()
- return texts,links
+    """Fetch every Warwick results page rather than stopping at the first 25."""
+    from playwright.sync_api import sync_playwright
+    texts, links, visited = [], {}, set()
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page(user_agent='Mozilla/5.0 (compatible; ResearchStoriesBot/1.0)')
+        page.goto(PROFILE, wait_until='domcontentloaded', timeout=60000)
+        page.wait_for_timeout(1400)
+        for _ in range(20):
+            content = page.locator('body').inner_text(timeout=15000)
+            marker = re.search(r'Showing page\s+(\d+),?\s+outputs', content, re.I)
+            fingerprint = marker.group(1) if marker else hashlib.sha1(content.encode()).hexdigest()
+            if fingerprint in visited: break
+            visited.add(fingerprint)
+            texts.append(content)
+            for a in page.locator('a[href]').all():
+                try:
+                    title = a.inner_text(timeout=300).strip()
+                    href = a.get_attribute('href')
+                    if title and href and len(title) > 18 and not title.upper().startswith('DOI'):
+                        links[title.casefold()] = urljoin(PROFILE, href)
+                except Exception: pass
+            # Some Warwick views display both top and bottom Next controls.
+            next_buttons = page.get_by_role('button', name='Next', exact=True)
+            changed = False
+            for btn in next_buttons.all():
+                try:
+                    if not btn.is_enabled(): continue
+                    btn.click(timeout=3000)
+                    page.wait_for_timeout(1250)
+                    next_text = page.locator('body').inner_text(timeout=12000)
+                    if next_text != content:
+                        changed = True
+                        break
+                except Exception: continue
+            if not changed: break
+        browser.close()
+    print(f'Warwick pages retrieved: {len(texts)}; linked titles: {len(links)}')
+    return texts, links
 
-def parse(texts,links):
- output={};now=datetime.date.today();cutoff=now.replace(year=now.year-4)
- for text in texts:
-  area=text.split('Showing page',1)[-1]
-  segments=re.split(r'\n\s*(?:'+'|'.join(re.escape(t) for t in TYPES)+r')\s*\n',area)
-  for seg in segments[1:]:
-   lines=[x.strip() for x in seg.splitlines() if x.strip()]
-   if len(lines)<2:continue
-   title=lines[0];match=DATE_RE.search('\n'.join(lines[1:7]))
-   if not match or len(title)<14:continue
-   try:dt=dateparser.parse(match.group(1),default=datetime.datetime(now.year,1,1)).date()
-   except (ValueError,OverflowError):continue
-   if dt<cutoff or dt>now:continue
-   link=links.get(title.lower(),'')
-   if not link:
-    link=next((v for k,v in links.items() if k.startswith(title.lower()[:65])),'')
-   doi_match=re.search(r'10\.\d{4,9}/[^\s]+',seg)
-   doi=doi_match.group(0).rstrip('.,') if doi_match else ''
-   if not link and doi:link='https://doi.org/'+doi
-   if not link:continue
-   ident='publication-'+hashlib.sha1((doi or title.lower()).encode()).hexdigest()[:12]
-   abstract=seg.split('DOI:',1)[-1] if 'DOI:' in seg else ''
-   abstract=re.split('MOREVIEW MORE INFO|\nPDF\n|Co-authors:',abstract)[-1].strip()[:3800]
-   if len(abstract)<80:abstract=''
-   output[ident]={'id':ident,'title':title,'date':dt.isoformat(),'type':'Research output','source':link,'doi':doi,'category':'Research','abstract':abstract,'angle':title,'teaser':(abstract[:230].rsplit(' ',1)[0]+'…') if abstract else 'Explore the research behind this recent output.','image':'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85','local_image':'images/market-feature.webp','image_alt':'Research notes and data','tags':['Research'],'status':'metadata-only'}
- return output
+
+def parse(texts, links, today=None):
+    """Read records from all pages, including PREPRINT and year-only dates."""
+    output = {}
+    now = today or datetime.date.today()
+    cutoff = now.replace(year=now.year - 4)
+    type_pattern = '|'.join(re.escape(t) for t in sorted(TYPES, key=len, reverse=True))
+    date_re = re.compile(r'(?<!\d)(?:\d{1,2}\s+[A-Za-z]{3,9}\s+20\d{2}|[A-Za-z]{3,9}\s+20\d{2}|20\d{2})(?!\d)')
+    for text in texts:
+        # Avoid repeating the introductory pagination and navigation elements.
+        area = text.rsplit('Showing page', 1)[-1] if 'Showing page' in text else text
+        segments = re.split(r'\n\s*('+type_pattern+r')\s*\n', area)
+        for pos in range(1, len(segments)-1, 2):
+            output_type = segments[pos]
+            seg = segments[pos+1]
+            lines = [x.strip() for x in seg.splitlines() if x.strip()]
+            if len(lines) < 2: continue
+            title = lines[0].strip()
+            # Date belongs to first publication detail lines, not to abstract citations.
+            date_line = next((l for l in lines[1:5] if date_re.search(l)), '')
+            match = date_re.search(date_line)
+            if not match or len(title) < 14: continue
+            raw_date = match.group(0)
+            try:
+                dt = dateparser.parse(raw_date, default=datetime.datetime(now.year, 1, 1)).date()
+            except (ValueError, OverflowError, TypeError): continue
+            if dt < cutoff or dt > now: continue
+            link = links.get(title.casefold(), '')
+            if not link:
+                title_key = title.casefold()
+                link = next((v for k,v in links.items()
+                             if k.startswith(title_key[:65]) or title_key.startswith(k[:65])), '')
+            doi_match = re.search(r'10\.\d{4,9}/[^\s<]+', seg)
+            doi = doi_match.group(0).rstrip('.,;') if doi_match else ''
+            if not link and doi: link = 'https://doi.org/' + doi
+            if not link: continue
+            ident = 'publication-' + hashlib.sha1((doi.lower() or title.casefold()).encode()).hexdigest()[:12]
+            # Text between the DOI details and MORE VIEW MORE INFO is often the
+            # complete Warwick abstract. Do not use the list of coauthors as text.
+            abstract = ''
+            if doi_match:
+                abstract = seg[doi_match.end():]
+            elif 'MORE VIEW MORE INFO' in seg:
+                abstract = seg.split('MORE VIEW MORE INFO', 1)[-1]
+            abstract = re.sub(r'(?i)\b(?:MORE VIEW MORE INFO|VIEW MORE INFO|SEE MORE)\b', ' ', abstract)
+            abstract = abstract.strip()[:8000]
+            if len(abstract) < 100: abstract = ''
+            output[ident] = {
+                'id':ident, 'title':title, 'date':dt.isoformat(),
+                'type':output_type.title(), 'source':link, 'doi':doi,
+                'abstract':abstract, 'angle':title, 'teaser':'',
+                'status':'candidate'
+            }
+    return output
+
 
 def extract_source(url):
  if 'papers.ssrn.com' in url:return '' # Often blocked; do not rely on incomplete page
