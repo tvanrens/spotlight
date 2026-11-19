@@ -47,8 +47,11 @@ def crawl():
                     node = btn.evaluate("(el) => ({tag: el.tagName, role: el.getAttribute('role'), html: el.outerHTML.slice(0,500)})")
                     print('Next control:',node)
                     if not btn.is_visible() or not btn.is_enabled(): continue
-                    btn.click(timeout=3500)
-                    page.wait_for_timeout(1750)
+                    # React's onClick handler works when invoked on the element.
+                    # DOM click avoids Playwright actionability timeouts caused
+                    # by Warwick's overlapping desktop/mobile pagination.
+                    btn.evaluate('(el) => el.click()')
+                    page.wait_for_timeout(1700)
                     next_text = page.locator('body').inner_text(timeout=12000)
                     next_marker = re.search(r'Showing page\s+(\d+),?\s+outputs',next_text,re.I)
                     next_page = next_marker.group(1) if next_marker else None
