@@ -143,6 +143,28 @@
     "kind": "popular"
   },
   {
+    "id": "publication-fb00e5f85c49",
+    "title": "Podcast: Food for thought – eating our way to a sustainable future (my bit starts at minute 13:12)",
+    "date": "2025-10-15",
+    "type": "Popular writing",
+    "source": "https://lnk.to/mOIzW4",
+    "doi": "",
+    "category": "Research",
+    "abstract": "",
+    "angle": "Podcast: Food for thought – eating our way to a sustainable future (my bit starts at minute 13:12)",
+    "teaser": "Food production drives nearly a third of global greenhouse gas emissions. So how do we help people choose meals that are good for their health,…",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
+    "local_image": "images/microphone.webp",
+    "image_alt": "Editorial illustration related to Podcast: Food for thought – eating our way to a sustainable future (my bit start",
+    "tags": [
+      "Research"
+    ],
+    "status": "popular-source-excerpt",
+    "kind": "popular",
+    "authors": "",
+    "venue": ""
+  },
+  {
     "id": "wage-rigidity",
     "title": "Why did we think wages are rigid for all those years?",
     "date": "2025-09-08",
@@ -278,5 +300,27 @@
     "venue": "Springer Nature Research Communities (Behind the Paper), 18 November 2024",
     "local_image": "images/market-feature.webp",
     "kind": "popular"
+  },
+  {
+    "id": "publication-313722ae4823",
+    "title": "News article: Healthy foods are often more expensive. Here’s why",
+    "date": "2023-12-27",
+    "type": "Popular writing",
+    "source": "https://www.cnbc.com/2023/12/27/healthy-foods-are-often-more-expensive-heres-why.html",
+    "doi": "",
+    "category": "Research",
+    "abstract": "",
+    "angle": "News article: Healthy foods are often more expensive. Here’s why",
+    "teaser": "Eating a healthier — or at least a more balanced diet — is not always as easy as it sounds, with food prices leading to…",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85",
+    "local_image": "images/market-feature.webp",
+    "image_alt": "Editorial illustration related to News article: Healthy foods are often more expensive. Here’s why",
+    "tags": [
+      "Research"
+    ],
+    "status": "popular-source-excerpt",
+    "kind": "popular",
+    "authors": "Idil Karsit",
+    "venue": "CNBC"
   }
 ]
