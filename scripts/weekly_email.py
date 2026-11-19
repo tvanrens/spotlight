@@ -6,11 +6,11 @@ ROOT=Path(__file__).resolve().parents[1]
 posts=json.loads((ROOT/'data/publications.json').read_text())
 posts.sort(key=lambda p:p['date'],reverse=True)
 articles=json.loads((ROOT/'data/articles.json').read_text())
-ready=[p for p in posts if p['id'] in articles and articles[p['id']]]
+ready=[p for p in posts if (p.get('kind')=='popular' and p.get('source')) or (p['id'] in articles and articles[p['id']])]
 posts=ready or posts
 index=max(0,(datetime.date.today()-datetime.date(2026,10,12)).days//7)%len(posts)
 p=posts[index];base=os.getenv('SITE_URL','https://YOUR-USERNAME.github.io/research-spotlight').rstrip('/')
-url=base+'/#article/'+p['id'];tags=' '.join('#'+x.replace(' ','') for x in p.get('tags',[])[:3]);short_tags=' '.join('#'+x.replace(' ','') for x in p.get('tags',[])[:2]);
+url=p['source'] if p.get('kind')=='popular' else base+'/#article/'+p['id'];tags=' '.join('#'+x.replace(' ','') for x in p.get('tags',[])[:3]);short_tags=' '.join('#'+x.replace(' ','') for x in p.get('tags',[])[:2]);
 linkedin=f"{p['angle']}\n\n{p['teaser']}\n\nI explore the research, what the evidence does (and doesn't) show, and why it matters.\n\nRead the story: {url}\nOriginal output: {p['source']}\n\n{tags} #Research #Economics"
 x=f"{p['angle']}\n\n{p['teaser'].split('.')[0]}.\n\n{url}\n{short_tags}"
 if len(x)>275:x=f"{p['angle']}\n{url}\n{short_tags}"
