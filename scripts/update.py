@@ -59,6 +59,10 @@ def crawl():
                     print('Cannot advance with Next:',str(exc)[:200])
             if not changed: break
         browser.close()
+    expected_match = re.search(r'Showing page\s+1\s+out of\s+(\d+)', texts[0], re.I) if texts else None
+    expected_pages = int(expected_match.group(1)) if expected_match else None
+    if expected_pages and len(texts) < expected_pages:
+        raise RuntimeError(f'Pagination incomplete: retrieved {len(texts)} of {expected_pages} Warwick pages')
     print(f'Warwick pages retrieved: {len(texts)}; linked titles: {len(links)}')
     return texts, links
 
