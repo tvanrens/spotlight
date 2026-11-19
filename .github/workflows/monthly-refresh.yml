@@ -21,6 +21,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_MODEL: gpt-4.1-mini
       - name: Propose changes as a pull request
+        id: monthly_pr
         uses: peter-evans/create-pull-request@v7
         with:
           branch: proposed-monthly-refresh
@@ -37,3 +38,26 @@ jobs:
             data/site-data.js
             data/candidates.json
             data/discovery-report.md
+
+      - name: Add preview and editorial review links to monthly PR
+        if: steps.monthly_pr.outputs.pull-request-number != ''
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ steps.monthly_pr.outputs.pull-request-number }}
+          PR_SHA: ${{ steps.monthly_pr.outputs.pull-request-head-sha }}
+        with:
+          script: |
+            const {owner, repo} = context.repo;
+            const number = Number(process.env.PR_NUMBER);
+            const sha = process.env.PR_SHA;
+            const url = 'https://raw.githack.com/' + owner + '/' + repo + '/' + sha + '/index.html';
+            const marker = '<!-- spotlight-monthly-preview -->';
+            const body = marker + '\n### Preview proposed website\n\n' +
+              '**[Open browser preview](' + url + ')** (public third-party static viewer; not yet live on GitHub Pages)\n\n' +
+              '**[Discovery report](https://github.com/' + owner + '/' + repo + '/blob/' + sha + '/data/discovery-report.md)** — records found, proposed and rejected.\n\n' +
+              '**[Candidates needing review](https://github.com/' + owner + '/' + repo + '/blob/' + sha + '/data/candidates.json)** — check each item\'s `review_reason`, original source, and metadata.\n\n' +
+              'Only merge after checking the new cards and article sources. Missing API credits will leave academic stories in the candidate list.';
+            const comments = await github.paginate(github.rest.issues.listComments,{owner,repo,issue_number:number});
+            const old = comments.find(c => c.user.type === 'Bot' && c.body?.includes(marker));
+            if (old) await github.rest.issues.updateComment({owner,repo,comment_id:old.id,body});
+            else await github.rest.issues.createComment({owner,repo,issue_number:number,body});
