@@ -50,7 +50,7 @@ def crawl():
                     btn.click(timeout=3500)
                     page.wait_for_timeout(1750)
                     next_text = page.locator('body').inner_text(timeout=12000)
-                    next_marker = re.search(r'Showing page\\s+(\\d+),?\\s+outputs',next_text,re.I)
+                    next_marker = re.search(r'Showing page\s+(\d+),?\s+outputs',next_text,re.I)
                     next_page = next_marker.group(1) if next_marker else None
                     if next_page and next_page != fingerprint:
                         changed = True
