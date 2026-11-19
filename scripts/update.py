@@ -42,7 +42,7 @@ def crawl():
  return texts,links
 
 def parse(texts,links):
- output={};now=datetime.date.today();cutoff=now.replace(year=now.year-2)
+ output={};now=datetime.date.today();cutoff=now.replace(year=now.year-4)
  for text in texts:
   area=text.split('Showing page',1)[-1]
   segments=re.split(r'\n\s*(?:'+'|'.join(re.escape(t) for t in TYPES)+r')\s*\n',area)
@@ -229,7 +229,7 @@ def main():
     candidates_path = ROOT/'data/candidates.json'
     previous = json.loads(candidates_path.read_text()) if candidates_path.exists() else []
     today = datetime.date.today()
-    cutoff = today.replace(year=today.year-2)
+    cutoff = today.replace(year=today.year-4)
     # Retain approved, complete, unique articles; avoid changing their copy.
     kept = []
     for p in published:
