@@ -278,5 +278,39 @@
     "venue": "Springer Nature Research Communities (Behind the Paper), 18 November 2024",
     "local_image": "images/market-feature.webp",
     "kind": "popular"
+  },
+  {
+    "id": "publication-313722ae4823",
+    "title": "News article: Healthy foods are often more expensive. Here’s why",
+    "date": "2023-12-27",
+    "type": "Popular writing",
+    "source": "https://www.cnbc.com/2023/12/27/healthy-foods-are-often-more-expensive-heres-why.html",
+    "doi": "",
+    "abstract": "",
+    "angle": "News article: Healthy foods are often more expensive. Here’s why",
+    "teaser": "Eating a healthier — or at least a more balanced diet — is not always as easy as it sounds, with food prices leading to…",
+    "status": "popular-source-excerpt",
+    "kind": "popular",
+    "local_image": "images/market-feature.webp",
+    "image_alt": "Editorial illustration related to News article: Healthy foods are often more expensive. Here’s why",
+    "authors": "Idil Karsit",
+    "venue": "CNBC"
+  },
+  {
+    "id": "publication-08aff01f29cd",
+    "title": "News article: Coventry professor says Rishi Sunak is treating us as 'fools' with his 'scandalous' net zero plans",
+    "date": "2023-09-22",
+    "type": "Popular writing",
+    "source": "https://www.coventrytelegraph.net/news/coventry-news/coventry-professor-says-rishi-sunak-27760735",
+    "doi": "",
+    "abstract": "",
+    "angle": "News article: Coventry professor says Rishi Sunak is treating us as 'fools' with his 'scandalous' net zero plans",
+    "teaser": "A University of Warwick economist has called the Prime Minister's net zero changes a “scandalous sleight of hand… which takes the public for fools”. Professor…",
+    "status": "popular-source-excerpt",
+    "kind": "popular",
+    "local_image": "images/conference.webp",
+    "image_alt": "Editorial illustration related to News article: Coventry professor says Rishi Sunak is treating us as 'fools' with",
+    "authors": "Kirstie McCrum",
+    "venue": "Coventry Live"
   }
 ]
