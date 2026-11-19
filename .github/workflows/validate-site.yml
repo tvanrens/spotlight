@@ -11,9 +11,10 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install beautifulsoup4 requests python-dateutil
-      - run: python -m py_compile scripts/update.py scripts/weekly_email.py scripts/test_content.py scripts/test_scraper.py
+      - run: python -m py_compile scripts/update.py scripts/weekly_email.py scripts/test_content.py scripts/test_scraper.py scripts/test_fail_closed.py
       - run: python scripts/test_content.py
       - run: python -m scripts.test_scraper
+      - run: python scripts/test_fail_closed.py
       - uses: actions/setup-node@v4
         with:
           node-version: '20'

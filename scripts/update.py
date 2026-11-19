@@ -361,16 +361,36 @@ def main():
         if p['kind'] == 'popular' and not p.get('source'): continue
         if any(same_work(p,q) for q in kept): continue
         kept.append(p)
-    try:
-        texts, links = crawl()
-        scraped = list(parse(texts, links).values())
-        if not texts or not scraped: raise RuntimeError('No Warwick publication records could be parsed')
-    except Exception as ex:
-        if os.getenv('DISCOVERY_ONLY') == '1':
-            raise RuntimeError('Discovery audit failed: Warwick returned no parseable records') from ex
-        print('Warwick crawl failed; retaining existing stories:',repr(ex))
-        scraped = []
-        audit.append(('ERROR','Warwick source could not be parsed; existing publications retained',str(ex),''))
+    # Failure of the external Warwick site is not an empty publication list.
+    # Retry transient navigation errors, then fail without changing any public data.
+    import time
+    import traceback
+    scraped = None
+    last_error = None
+    for attempt in range(1, 4):
+        try:
+            print(f'Warwick crawl attempt {attempt}/3', flush=True)
+            texts, links = crawl()
+            if not texts:
+                raise RuntimeError('Warwick returned no page text')
+            scraped = list(parse(texts, links).values())
+            if not scraped:
+                raise RuntimeError(
+                    f'No Warwick records parsed from {len(texts)} pages, '
+                    f'{len(links)} discovered title links; first page excerpt: '
+                    + repr(texts[0][:500]))
+            break
+        except Exception as exc:
+            last_error = exc
+            print(f'Warwick attempt {attempt} failed: {exc!r}', flush=True)
+            traceback.print_exc()
+            if attempt < 3:
+                time.sleep(5 * attempt)
+    if scraped is None:
+        raise RuntimeError(
+            'Monthly refresh aborted: Warwick publication discovery failed '
+            'after three attempts. No content or pull request has been generated.'
+        ) from last_error
     print('Unique recent records from Warwick:',len(scraped))
     if os.getenv('DISCOVERY_ONLY') == '1':
         report=['# Warwick four-year discovery diagnostic','',
