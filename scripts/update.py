@@ -352,6 +352,8 @@ def main():
         scraped = list(parse(texts, links).values())
         if not texts or not scraped: raise RuntimeError('No Warwick publication records could be parsed')
     except Exception as ex:
+        if os.getenv('DISCOVERY_ONLY') == '1':
+            raise RuntimeError('Discovery audit failed: Warwick returned no parseable records') from ex
         print('Warwick crawl failed; retaining existing stories:',repr(ex))
         scraped = []
         audit.append(('ERROR','Warwick source could not be parsed; existing publications retained',str(ex),''))
