@@ -166,6 +166,8 @@ def canonical_doi(value):
 
 def normalize_title(title):
     s = unicodedata.normalize('NFKD', title or '').lower()
+    s = re.sub(r'\([^)]*(?:minute|starts at|my bit|listen)[^)]*\)', '', s)
+    s = re.sub(r'\b(?:video|podcast|news article|blog post)\s*:\s*', '', s)
     s = re.sub(r'\b(p\d{1,3}|op\d{1,3})\s+', '', s)
     s = re.sub(r'[^a-z0-9 ]', ' ', s)
     s = re.sub(r'\s+', ' ', s).strip()
@@ -181,13 +183,13 @@ def same_work(a, b):
     if ta == tb: return True
     # Prefixes such as P81 / OP81 and minor wording differences are common
     # in Warwick's publication records.
-    return SequenceMatcher(None, ta, tb).ratio() >= 0.91
+    return SequenceMatcher(None, ta, tb).ratio() >= 0.86 if (ta.startswith(tb[:35]) or tb.startswith(ta[:35])) else SequenceMatcher(None, ta, tb).ratio() >= 0.91
 
 def classify(p):
     if p.get('kind') in ('academic', 'popular'): return p['kind']
     title = (p.get('title') or '').lower()
     url = (p.get('source') or '').lower()
-    if title.startswith(POPULAR_PHRASES) or any(t in url for t in ('/news/','/impact/','/blog/','/podcast/','/writtenevidence/')):
+    if title.startswith(POPULAR_PHRASES + ('video:',)) or 'thesciencebreaker' in url or any(t in url for t in ('/news/','/impact/','/blog/','/podcast/','/writtenevidence/')):
         return 'popular'
     if any(t in url for t in ACADEMIC_HINTS) or canonical_doi(p.get('doi')):
         return 'academic'
@@ -332,79 +334,112 @@ def main():
     published = json.loads(PUB.read_text())
     articles = json.loads(ARTICLES.read_text())
     candidates_path = ROOT/'data/candidates.json'
+    report_path = ROOT/'data/discovery-report.md'
     previous = json.loads(candidates_path.read_text()) if candidates_path.exists() else []
     today = datetime.date.today()
     cutoff = today.replace(year=today.year-4)
-    # Retain approved, complete, unique articles; avoid changing their copy.
-    kept = []
+    kept, audit = [], []
     for p in published:
         if not cutoff <= datetime.date.fromisoformat(p['date']) <= today: continue
         p['kind'] = classify(p)
         if p['kind'] == 'academic' and not (p['id'] in articles and
                  500 <= len(' '.join(articles[p['id']]).split()) <= 1000): continue
         if p['kind'] == 'popular' and not p.get('source'): continue
-        if any(same_work(p, q) for q in kept): continue
+        if any(same_work(p,q) for q in kept): continue
         kept.append(p)
     try:
         texts, links = crawl()
         scraped = list(parse(texts, links).values())
+        if not texts or not scraped: raise RuntimeError('No Warwick publication records could be parsed')
     except Exception as ex:
-        print('Warwick crawl failed; retaining existing stories:', repr(ex))
+        print('Warwick crawl failed; retaining existing stories:',repr(ex))
         scraped = []
-    print('New Warwick records discovered:', len(scraped))
-    pending = []
+        audit.append(('ERROR','Warwick source could not be parsed; existing publications retained',str(ex),''))
+    print('Unique recent records from Warwick:',len(scraped))
+    pending=[]
+    # Avoid re-querying sources for the same known candidate twice in one run.
     for p in scraped:
-        if any(same_work(p, old) for old in kept): continue
-        if any(same_work(p, old) for old in pending): continue
+        if any(same_work(p,old) for old in kept):
+            audit.append(('ALREADY ON SITE',p['title'],p['date'],p['source']))
+            continue
+        if any(same_work(p,old) for old in pending):
+            audit.append(('DUPLICATE',p['title'],p['date'],p['source']))
+            continue
         p['kind'] = classify(p)
-        details = source_details(p['source'])
-        if p['kind'] == 'academic':
-            crossref = doi_details(p.get('doi'))
-            details['authors'] = crossref.get('authors') or details.get('authors','')
-            details['venue'] = crossref.get('venue') or details.get('venue','')
-        p['authors'] = details.get('authors','')
-        p['venue'] = details.get('venue','')
         p['local_image'] = choose_image(p)
         p['image_alt'] = 'Editorial illustration related to '+p['title'][:80]
+        details = source_details(p['source'])
+        p['authors'] = details.get('authors','')
+        p['venue'] = details.get('venue','')
         if p['kind'] == 'popular':
-            # No AI article: use a short source excerpt and link to the original.
+            p['type'] = 'Popular writing'
+            p['angle'] = p['title']
             intro = details.get('intro','')
-            if intro:
+            if intro and len(intro.split())>=18:
                 p['teaser'] = excerpt(intro)
                 p['status'] = 'popular-source-excerpt'
-            else:
-                p['status'] = 'needs-source-review'
-            p['angle'] = p['title']
-            p['type'] = 'Popular writing'
-            if p['status'] == 'popular-source-excerpt':
                 kept.append(p)
+                audit.append(('PROPOSED popular link',p['title'],p['date'],p['source']))
                 continue
+            p['status']='needs-original-introduction'
+            p['review_reason']='Original article introduction unavailable (link / login / JS or redirect)'
         else:
-            source_text = extract_source(p['source'])
-            if good_metadata(p) and len(source_text) >= 1300 and os.getenv('OPENAI_API_KEY'):
+            p['type']='Academic publication'
+            crossref = doi_details(p.get('doi'))
+            openalex = openalex_details(p)
+            p['authors'] = crossref.get('authors') or openalex.get('authors') or p['authors']
+            p['venue'] = crossref.get('venue') or openalex.get('venue') or p['venue']
+            fulltext, basis = source_material(p,crossref,openalex)
+            p['evidence_basis'] = basis
+            if good_metadata(p) and fulltext and os.getenv('OPENAI_API_KEY'):
                 try:
-                    generated = draft(p, source_text)
+                    p['abstract'] = max([p.get('abstract',''),crossref.get('abstract',''),
+                                         openalex.get('abstract','')],key=len)
+                    generated = draft(p,fulltext)
                     if generated:
-                        for key in ('angle','teaser','tags'): p[key] = generated[key]
+                        for key in ('angle','teaser','tags'):
+                            p[key] = generated[key]
+                        if not good_teaser(p): raise ValueError('Generated teaser failed editorial checks')
                         articles[p['id']] = generated['paragraphs']
-                        p['status'] = 'ai-draft-needs-review'
-                        if good_teaser(p):
-                            kept.append(p)
-                            continue
+                        p['status']='ai-draft-needs-review'
+                        kept.append(p)
+                        audit.append(('PROPOSED academic story ('+basis+')',p['title'],p['date'],p['source']))
+                        continue
                 except Exception as ex:
-                    print('Draft needs manual attention:', p['title'], repr(ex))
-            p['status'] = 'needs-source-or-metadata-review'
+                    p['review_reason']='Draft generation failed: '+str(ex)[:200]
+            if not good_metadata(p):
+                p['review_reason']='Missing verified authors or journal/venue'
+            elif not fulltext:
+                p['review_reason']='Insufficient full text or detailed abstract'
+            elif not os.getenv('OPENAI_API_KEY'):
+                p['review_reason']='OPENAI_API_KEY secret unavailable'
+            p['status']='needs-source-or-metadata-review'
         pending.append(p)
-    # Store source candidates for review, not on the public site.
-    pending = [p for p in previous if not any(same_work(p, x) for x in kept + pending)] + pending
-    kept.sort(key=lambda p:p['date'], reverse=True)
+        audit.append(('NEEDS REVIEW: '+p.get('review_reason','unknown'),p['title'],p['date'],p['source']))
+    # Do not carry stale duplicates into the register.
+    pending = [p for p in previous if not any(same_work(p,x) for x in kept+pending)]+pending
+    kept.sort(key=lambda p:p['date'],reverse=True)
+    pending.sort(key=lambda p:p.get('date',''),reverse=True)
     candidates_path.write_text(json.dumps(pending,indent=2,ensure_ascii=False)+'\n')
     PUB.write_text(json.dumps(kept,indent=2,ensure_ascii=False)+'\n')
     ARTICLES.write_text(json.dumps(articles,indent=2,ensure_ascii=False)+'\n')
     (ROOT/'data/site-data.js').write_text(
         '/* Generated; do not edit by hand. */\nwindow.RESEARCH_DATA = '+
         json.dumps({'publications':kept,'articles':articles},ensure_ascii=False).replace('</','<\\/')+';\n')
-    print(f'Prepared {len(kept)} unique stories and {len(pending)} source candidates for PR approval.')
+    # The report makes omissions visible and reviewable rather than silent.
+    lines=['# Four-year Warwick discovery report','',
+           f'Generated: {today.isoformat()} (publication cutoff {cutoff.isoformat()})','',
+           f'- Warwick candidate records: **{len(scraped)}**',
+           f'- Proposed website stories (including existing): **{len(kept)}**',
+           f'- Pending records requiring human review: **{len(pending)}**','',
+           'Status | Publication | Date | Source','--- | --- | --- | ---']
+    for status,title,date,source in audit:
+        title=title.replace('|','/').replace('\n',' ')
+        status=status.replace('|','/').replace('\n',' ')
+        lines.append(f'{status} | {title} | {date} | {source}')
+    report_path.write_text('\n'.join(lines)+'\n')
+    print(f'Prepared {len(kept)} unique stories, {len(pending)} review candidates,'
+          ' and a full discovery report in data/discovery-report.md')
 
 if __name__ == '__main__':
     main()
