@@ -37,19 +37,26 @@ def crawl():
                     if title and href and len(title) > 18 and not title.upper().startswith('DOI'):
                         links[title.casefold()] = urljoin(PROFILE, href)
                 except Exception: pass
-            # Some Warwick views display both top and bottom Next controls.
-            next_buttons = page.get_by_role('button', name='Next', exact=True)
+            # Warwick has used button, link and text-only pagination controls.
+            # Iterate all visible "Next" controls, rather than assuming role=button.
             changed = False
-            for btn in next_buttons.all():
+            controls = page.get_by_text('Next', exact=True)
+            print('Pagination controls:',controls.count(),'from page',fingerprint)
+            for btn in controls.all():
                 try:
-                    if not btn.is_enabled(): continue
-                    btn.click(timeout=3000)
-                    page.wait_for_timeout(1250)
+                    node = btn.evaluate("(el) => ({tag: el.tagName, role: el.getAttribute('role'), html: el.outerHTML.slice(0,500)})")
+                    print('Next control:',node)
+                    if not btn.is_visible() or not btn.is_enabled(): continue
+                    btn.click(timeout=3500)
+                    page.wait_for_timeout(1750)
                     next_text = page.locator('body').inner_text(timeout=12000)
-                    if next_text != content:
+                    next_marker = re.search(r'Showing page\\s+(\\d+),?\\s+outputs',next_text,re.I)
+                    next_page = next_marker.group(1) if next_marker else None
+                    if next_page and next_page != fingerprint:
                         changed = True
                         break
-                except Exception: continue
+                except Exception as exc:
+                    print('Cannot advance with Next:',str(exc)[:200])
             if not changed: break
         browser.close()
     print(f'Warwick pages retrieved: {len(texts)}; linked titles: {len(links)}')
