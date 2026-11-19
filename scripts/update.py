@@ -161,6 +161,40 @@ def good_teaser(p):
     return bool(20 <= len(t.split()) < 100 and not any(b in t.lower() for b in BANNED_TEASERS)
                 and not t.lower().startswith(('10.', 'doi:', 'context:')))
 
+def doi_details(doi):
+    """Retrieve indexed academic attribution instead of inventing a byline."""
+    doi = canonical_doi(doi)
+    if not doi: return {}
+    try:
+        response = requests.get('https://api.crossref.org/works/'+doi,
+                                timeout=20, headers={'User-Agent':'ResearchSpotlight/1.0 (academic bibliography)'})
+        if not response.ok: return {}
+        msg = response.json().get('message',{})
+        authors = ', '.join(' '.join(filter(None,[a.get('given',''),a.get('family','')]))
+                            for a in msg.get('author',[]))
+        venue = (msg.get('container-title') or [''])[0]
+        return {'authors':authors, 'venue':venue}
+    except Exception as e:
+        print('Crossref lookup failed:',doi,str(e))
+        return {}
+
+def choose_image(p):
+    """Reuse existing local editorial images; never auto-publish an external hotlink."""
+    title=(p.get('title') or '').lower()
+    rules=[
+      (('podcast','food for thought'),'images/microphone.webp'),
+      (('parliament','house of lords','committee'),'images/parliament.webp'),
+      (('wage','labour','employment','unemployment'),'images/labour-city.webp'),
+      (('pantry','food insecurity','food bank','community food'),'images/supermarket-aisle.webp'),
+      (('sugar','tax','drink','soda'),'images/supermarket-shopper.webp'),
+      (('environment','sustainab','climate','planet'),'images/landscape-sunset.webp'),
+      (('grocery','supermarket','shopping','swap','food'),'images/market-feature.webp'),
+    ]
+    for terms, image in rules:
+        if any(term in title for term in terms):
+            return image
+    return 'images/conference.webp'
+
 def source_details(url):
     """Return publisher-supplied description, byline and venue when available.
     Never assign an unverified individual author."""
@@ -219,8 +253,14 @@ def main():
         if any(same_work(p, old) for old in pending): continue
         p['kind'] = classify(p)
         details = source_details(p['source'])
+        if p['kind'] == 'academic':
+            crossref = doi_details(p.get('doi'))
+            details['authors'] = crossref.get('authors') or details.get('authors','')
+            details['venue'] = crossref.get('venue') or details.get('venue','')
         p['authors'] = details.get('authors','')
         p['venue'] = details.get('venue','')
+        p['local_image'] = choose_image(p)
+        p['image_alt'] = 'Editorial illustration related to '+p['title'][:80]
         if p['kind'] == 'popular':
             # No AI article: use a short source excerpt and link to the original.
             intro = details.get('intro','')
@@ -231,7 +271,7 @@ def main():
                 p['status'] = 'needs-source-review'
             p['angle'] = p['title']
             p['type'] = 'Popular writing'
-            if p['status'] == 'popular-source-excerpt' and good_metadata(p):
+            if p['status'] == 'popular-source-excerpt':
                 kept.append(p)
                 continue
         else:
