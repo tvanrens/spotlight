@@ -10,8 +10,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m py_compile scripts/update.py scripts/weekly_email.py scripts/test_content.py
+      - run: pip install beautifulsoup4 requests python-dateutil
+      - run: python -m py_compile scripts/update.py scripts/weekly_email.py scripts/test_content.py scripts/test_scraper.py
       - run: python scripts/test_content.py
+      - run: python -m scripts.test_scraper
       - uses: actions/setup-node@v4
         with:
           node-version: '20'

@@ -11,62 +11,119 @@ from dateutil import parser as dateparser
 ROOT=Path(__file__).resolve().parents[1]
 PROFILE='https://profiles.warwick.ac.uk/ecslak-thijs-van-rens/publications'
 PUB=ROOT/'data/publications.json'; ARTICLES=ROOT/'data/articles.json'
-TYPES=['JOURNAL ARTICLE','PREPRINT / WORKING PAPER','CONFERENCE','INTERNET PUBLICATION','MEDIA','BOOK','CHAPTER','OTHER','REPORT']
+TYPES=['JOURNAL ARTICLE','PREPRINT / WORKING PAPER','PREPRINT','WORKING PAPER','CONFERENCE','INTERNET PUBLICATION','MEDIA','BOOK','BOOK CHAPTER','CHAPTER','OTHER','REPORT','WRITTEN EVIDENCE']
 DATE_RE=re.compile(r'(?<!\d)(\d{1,2}\s+[A-Z][a-z]{2,8}\s+20\d\d|[A-Z][a-z]{2,8}\s+20\d\d)(?!\d)')
 
 def crawl():
- from playwright.sync_api import sync_playwright
- texts=[]; links={}
- with sync_playwright() as p:
-  browser=p.chromium.launch(headless=True)
-  page=browser.new_page(user_agent='Mozilla/5.0 (compatible; ResearchStoriesBot/1.0; personal academic publication digest)')
-  page.goto(PROFILE,wait_until='domcontentloaded',timeout=60000)
-  page.wait_for_timeout(2200)
-  for i in range(8):
-   content=page.locator('body').inner_text(timeout=15000)
-   if content in texts:break
-   texts.append(content)
-   for a in page.locator('a[href]').all():
-    try:
-     title=a.inner_text(timeout=500).strip();href=a.get_attribute('href')
-     if title and href and len(title)>24 and not title.startswith('DOI'): links[title.lower()]=urljoin(PROFILE,href)
-    except Exception:pass
-   buttons=page.get_by_role('button',name='Next',exact=True)
-   advanced=False
-   for btn in buttons.all():
-    if btn.is_enabled():
-     try:btn.click(timeout=2500);page.wait_for_timeout(1200);advanced=True;break
-     except Exception:pass
-   if not advanced:break
-  browser.close()
- return texts,links
+    """Fetch every Warwick results page rather than stopping at the first 25."""
+    from playwright.sync_api import sync_playwright
+    texts, links, visited = [], {}, set()
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page(user_agent='Mozilla/5.0 (compatible; ResearchStoriesBot/1.0)')
+        page.goto(PROFILE, wait_until='domcontentloaded', timeout=60000)
+        page.wait_for_timeout(1400)
+        for _ in range(20):
+            content = page.locator('body').inner_text(timeout=15000)
+            marker = re.search(r'Showing page\s+(\d+),?\s+outputs', content, re.I)
+            fingerprint = marker.group(1) if marker else hashlib.sha1(content.encode()).hexdigest()
+            if fingerprint in visited: break
+            visited.add(fingerprint)
+            texts.append(content)
+            for a in page.locator('a[href]').all():
+                try:
+                    title = a.inner_text(timeout=300).strip()
+                    href = a.get_attribute('href')
+                    if title and href and len(title) > 18 and not title.upper().startswith('DOI'):
+                        links[title.casefold()] = urljoin(PROFILE, href)
+                except Exception: pass
+            # Warwick has used button, link and text-only pagination controls.
+            # Iterate all visible "Next" controls, rather than assuming role=button.
+            changed = False
+            controls = page.get_by_text('Next', exact=True)
+            print('Pagination controls:',controls.count(),'from page',fingerprint)
+            for btn in controls.all():
+                try:
+                    node = btn.evaluate("(el) => ({tag: el.tagName, role: el.getAttribute('role'), html: el.outerHTML.slice(0,500)})")
+                    print('Next control:',node)
+                    if not btn.is_visible() or not btn.is_enabled(): continue
+                    # React's onClick handler works when invoked on the element.
+                    # DOM click avoids Playwright actionability timeouts caused
+                    # by Warwick's overlapping desktop/mobile pagination.
+                    btn.evaluate('(el) => el.click()')
+                    page.wait_for_timeout(1700)
+                    next_text = page.locator('body').inner_text(timeout=12000)
+                    next_marker = re.search(r'Showing page\s+(\d+),?\s+outputs',next_text,re.I)
+                    next_page = next_marker.group(1) if next_marker else None
+                    if next_page and next_page != fingerprint:
+                        changed = True
+                        break
+                except Exception as exc:
+                    print('Cannot advance with Next:',str(exc)[:200])
+            if not changed: break
+        browser.close()
+    expected_match = re.search(r'Showing page\s+1\s+out of\s+(\d+)', texts[0], re.I) if texts else None
+    expected_pages = int(expected_match.group(1)) if expected_match else None
+    if expected_pages and len(texts) < expected_pages:
+        raise RuntimeError(f'Pagination incomplete: retrieved {len(texts)} of {expected_pages} Warwick pages')
+    print(f'Warwick pages retrieved: {len(texts)}; linked titles: {len(links)}')
+    return texts, links
 
-def parse(texts,links):
- output={};now=datetime.date.today();cutoff=now.replace(year=now.year-4)
- for text in texts:
-  area=text.split('Showing page',1)[-1]
-  segments=re.split(r'\n\s*(?:'+'|'.join(re.escape(t) for t in TYPES)+r')\s*\n',area)
-  for seg in segments[1:]:
-   lines=[x.strip() for x in seg.splitlines() if x.strip()]
-   if len(lines)<2:continue
-   title=lines[0];match=DATE_RE.search('\n'.join(lines[1:7]))
-   if not match or len(title)<14:continue
-   try:dt=dateparser.parse(match.group(1),default=datetime.datetime(now.year,1,1)).date()
-   except (ValueError,OverflowError):continue
-   if dt<cutoff or dt>now:continue
-   link=links.get(title.lower(),'')
-   if not link:
-    link=next((v for k,v in links.items() if k.startswith(title.lower()[:65])),'')
-   doi_match=re.search(r'10\.\d{4,9}/[^\s]+',seg)
-   doi=doi_match.group(0).rstrip('.,') if doi_match else ''
-   if not link and doi:link='https://doi.org/'+doi
-   if not link:continue
-   ident='publication-'+hashlib.sha1((doi or title.lower()).encode()).hexdigest()[:12]
-   abstract=seg.split('DOI:',1)[-1] if 'DOI:' in seg else ''
-   abstract=re.split('MOREVIEW MORE INFO|\nPDF\n|Co-authors:',abstract)[-1].strip()[:3800]
-   if len(abstract)<80:abstract=''
-   output[ident]={'id':ident,'title':title,'date':dt.isoformat(),'type':'Research output','source':link,'doi':doi,'category':'Research','abstract':abstract,'angle':title,'teaser':(abstract[:230].rsplit(' ',1)[0]+'…') if abstract else 'Explore the research behind this recent output.','image':'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=85','local_image':'images/market-feature.webp','image_alt':'Research notes and data','tags':['Research'],'status':'metadata-only'}
- return output
+
+def parse(texts, links, today=None):
+    """Read records from all pages, including PREPRINT and year-only dates."""
+    output = {}
+    now = today or datetime.date.today()
+    cutoff = now.replace(year=now.year - 4)
+    type_pattern = '|'.join(re.escape(t) for t in sorted(TYPES, key=len, reverse=True))
+    date_re = re.compile(r'(?<!\d)(?:\d{1,2}\s+[A-Za-z]{3,9}\s+20\d{2}|[A-Za-z]{3,9}\s+20\d{2}|20\d{2})(?!\d)')
+    for text in texts:
+        # Avoid repeating the introductory pagination and navigation elements.
+        area = text.rsplit('Showing page', 1)[-1] if 'Showing page' in text else text
+        segments = re.split(r'\n\s*('+type_pattern+r')\s*\n', area)
+        for pos in range(1, len(segments)-1, 2):
+            output_type = segments[pos]
+            seg = segments[pos+1]
+            lines = [x.strip() for x in seg.splitlines() if x.strip()]
+            if len(lines) < 2: continue
+            title = lines[0].strip()
+            # Date belongs to first publication detail lines, not to abstract citations.
+            date_line = next((l for l in lines[1:5] if date_re.search(l)), '')
+            match = date_re.search(date_line)
+            if not match or len(title) < 14: continue
+            raw_date = match.group(0)
+            try:
+                dt = dateparser.parse(raw_date, default=datetime.datetime(now.year, 1, 1)).date()
+            except (ValueError, OverflowError, TypeError): continue
+            if dt < cutoff or dt > now: continue
+            link = links.get(title.casefold(), '')
+            if not link:
+                title_key = title.casefold()
+                link = next((v for k,v in links.items()
+                             if k.startswith(title_key[:65]) or title_key.startswith(k[:65])), '')
+            doi_match = re.search(r'10\.\d{4,9}/[^\s<]+', seg)
+            doi = doi_match.group(0).rstrip('.,;') if doi_match else ''
+            if not link and doi: link = 'https://doi.org/' + doi
+            if not link: continue
+            ident = 'publication-' + hashlib.sha1((doi.lower() or title.casefold()).encode()).hexdigest()[:12]
+            # Text between the DOI details and MORE VIEW MORE INFO is often the
+            # complete Warwick abstract. Do not use the list of coauthors as text.
+            abstract = ''
+            if doi_match:
+                abstract = seg[doi_match.end():]
+            elif 'MORE VIEW MORE INFO' in seg:
+                abstract = seg.split('MORE VIEW MORE INFO', 1)[-1]
+            abstract = re.sub(r'(?i)\b(?:MORE VIEW MORE INFO|VIEW MORE INFO|SEE MORE)\b', ' ', abstract)
+            abstract = abstract.strip()[:8000]
+            if len(abstract) < 100: abstract = ''
+            output[ident] = {
+                'id':ident, 'title':title, 'date':dt.isoformat(),
+                'type':output_type.title(), 'source':link, 'doi':doi,
+                'abstract':abstract, 'angle':title, 'teaser':'',
+                'status':'candidate'
+            }
+    return output
+
 
 def extract_source(url):
  if 'papers.ssrn.com' in url:return '' # Often blocked; do not rely on incomplete page
@@ -123,6 +180,8 @@ def canonical_doi(value):
 
 def normalize_title(title):
     s = unicodedata.normalize('NFKD', title or '').lower()
+    s = re.sub(r'\([^)]*(?:minute|starts at|my bit|listen)[^)]*\)', '', s)
+    s = re.sub(r'\b(?:video|podcast|news article|blog post)\s*:\s*', '', s)
     s = re.sub(r'\b(p\d{1,3}|op\d{1,3})\s+', '', s)
     s = re.sub(r'[^a-z0-9 ]', ' ', s)
     s = re.sub(r'\s+', ' ', s).strip()
@@ -138,13 +197,13 @@ def same_work(a, b):
     if ta == tb: return True
     # Prefixes such as P81 / OP81 and minor wording differences are common
     # in Warwick's publication records.
-    return SequenceMatcher(None, ta, tb).ratio() >= 0.91
+    return SequenceMatcher(None, ta, tb).ratio() >= 0.86 if (ta.startswith(tb[:35]) or tb.startswith(ta[:35])) else SequenceMatcher(None, ta, tb).ratio() >= 0.91
 
 def classify(p):
     if p.get('kind') in ('academic', 'popular'): return p['kind']
     title = (p.get('title') or '').lower()
     url = (p.get('source') or '').lower()
-    if title.startswith(POPULAR_PHRASES) or any(t in url for t in ('/news/','/impact/','/blog/','/podcast/','/writtenevidence/')):
+    if title.startswith(POPULAR_PHRASES + ('video:',)) or 'thesciencebreaker' in url or any(t in url for t in ('/news/','/impact/','/blog/','/podcast/','/writtenevidence/')):
         return 'popular'
     if any(t in url for t in ACADEMIC_HINTS) or canonical_doi(p.get('doi')):
         return 'academic'
@@ -162,21 +221,83 @@ def good_teaser(p):
                 and not t.lower().startswith(('10.', 'doi:', 'context:')))
 
 def doi_details(doi):
-    """Retrieve indexed academic attribution instead of inventing a byline."""
+    """Crossref journal metadata, including abstracts where available."""
     doi = canonical_doi(doi)
     if not doi: return {}
     try:
         response = requests.get('https://api.crossref.org/works/'+doi,
-                                timeout=20, headers={'User-Agent':'ResearchSpotlight/1.0 (academic bibliography)'})
+                                timeout=16, headers={'User-Agent':'ResearchSpotlight/1.0 (tvanrens@gmail.com)'})
         if not response.ok: return {}
         msg = response.json().get('message',{})
         authors = ', '.join(' '.join(filter(None,[a.get('given',''),a.get('family','')]))
                             for a in msg.get('author',[]))
         venue = (msg.get('container-title') or [''])[0]
-        return {'authors':authors, 'venue':venue}
+        abstract_html = BeautifulSoup(msg.get('abstract',''), 'html.parser')
+        abstract = abstract_html.get_text(' ',strip=True)
+        return {'authors':authors,'venue':venue,'abstract':abstract,
+                'publisher':msg.get('publisher',''),'doi':doi}
     except Exception as e:
         print('Crossref lookup failed:',doi,str(e))
         return {}
+
+
+def openalex_details(pub):
+    """OpenAlex can resolve DOI metadata and open-access full-text links."""
+    from urllib.parse import quote
+    doi=canonical_doi(pub.get('doi'))
+    title=pub.get('title','')
+    urls=[]
+    if doi: urls.append('https://api.openalex.org/works/https://doi.org/'+quote(doi,safe='/'))
+    if title: urls.append('https://api.openalex.org/works?search='+quote(title)+'&per-page=5')
+    for url in urls:
+        try:
+            response=requests.get(url,timeout=18,headers={'User-Agent':'ResearchSpotlight/1.0'})
+            if not response.ok: continue
+            payload=response.json()
+            works=payload.get('results',[]) if 'results' in payload else [payload]
+            for w in works:
+                if not same_work(pub, {'title':w.get('display_name',''),
+                                       'doi':w.get('doi','')}): continue
+                authors=', '.join(a.get('author',{}).get('display_name','')
+                                  for a in w.get('authorships',[]) if a.get('author',{}).get('display_name'))
+                source=(w.get('primary_location') or {}).get('source') or {}
+                venue=source.get('display_name','')
+                inv=w.get('abstract_inverted_index') or {}
+                terms=[(position,word) for word,positions in inv.items() for position in positions]
+                abstract=' '.join(word for _,word in sorted(terms))[:12000]
+                oa=w.get('best_oa_location') or {}
+                pdf=oa.get('pdf_url') or ''
+                return {'authors':authors,'venue':venue,'abstract':abstract,
+                        'pdf_url':pdf if pdf.startswith('https://') else ''}
+        except Exception as e:
+            print('OpenAlex lookup failed:',str(e))
+    return {}
+
+
+def source_material(pub, crossref=None, openalex=None):
+    """Prefer full text, fall back to descriptive abstracts with explicit limitations."""
+    crossref=crossref or {}
+    openalex=openalex or {}
+    sources=[pub.get('source','')]
+    oa_pdf=openalex.get('pdf_url','')
+    if oa_pdf and oa_pdf not in sources: sources.append(oa_pdf)
+    candidates=[]
+    for link in sources[:2]:
+        if not link: continue
+        content=extract_source(link)
+        if content: candidates.append((len(content),content,link))
+    if candidates:
+        length,text,url=max(candidates)
+        if length>=1900: return text, 'full-text candidate ('+url+')'
+    abstract=max([pub.get('abstract',''),crossref.get('abstract',''),
+                  openalex.get('abstract','')],key=len)
+    # An abstract can support a careful general-audience summary, but the
+    # generated article must never invent effects or imply full-text review.
+    if len(abstract)>=650: return abstract, 'abstract only'
+    if candidates and max(x[0] for x in candidates)>=1100:
+        return max(candidates)[1], 'partial source text'
+    return '', 'insufficient public source text'
+
 
 def choose_image(p):
     """Reuse existing local editorial images; never auto-publish an external hotlink."""
@@ -227,79 +348,125 @@ def main():
     published = json.loads(PUB.read_text())
     articles = json.loads(ARTICLES.read_text())
     candidates_path = ROOT/'data/candidates.json'
+    report_path = ROOT/'data/discovery-report.md'
     previous = json.loads(candidates_path.read_text()) if candidates_path.exists() else []
     today = datetime.date.today()
     cutoff = today.replace(year=today.year-4)
-    # Retain approved, complete, unique articles; avoid changing their copy.
-    kept = []
+    kept, audit = [], []
     for p in published:
         if not cutoff <= datetime.date.fromisoformat(p['date']) <= today: continue
         p['kind'] = classify(p)
         if p['kind'] == 'academic' and not (p['id'] in articles and
                  500 <= len(' '.join(articles[p['id']]).split()) <= 1000): continue
         if p['kind'] == 'popular' and not p.get('source'): continue
-        if any(same_work(p, q) for q in kept): continue
+        if any(same_work(p,q) for q in kept): continue
         kept.append(p)
     try:
         texts, links = crawl()
         scraped = list(parse(texts, links).values())
+        if not texts or not scraped: raise RuntimeError('No Warwick publication records could be parsed')
     except Exception as ex:
-        print('Warwick crawl failed; retaining existing stories:', repr(ex))
+        if os.getenv('DISCOVERY_ONLY') == '1':
+            raise RuntimeError('Discovery audit failed: Warwick returned no parseable records') from ex
+        print('Warwick crawl failed; retaining existing stories:',repr(ex))
         scraped = []
-    print('New Warwick records discovered:', len(scraped))
-    pending = []
+        audit.append(('ERROR','Warwick source could not be parsed; existing publications retained',str(ex),''))
+    print('Unique recent records from Warwick:',len(scraped))
+    if os.getenv('DISCOVERY_ONLY') == '1':
+        report=['# Warwick four-year discovery diagnostic','',
+                'Date: '+today.isoformat(),'',
+                'Candidate records: '+str(len(scraped)),'',
+                '| Date | Output | Source |','|---|---|---|']
+        for pub in sorted(scraped,key=lambda x:x['date'],reverse=True):
+            report.append('| '+pub['date']+' | '+pub['title'].replace('|','/')+
+                          ' | '+pub['source']+' |')
+        report_path.write_text('\n'.join(report)+'\n')
+        print('\n'.join(report))
+        return
+    pending=[]
+    # Avoid re-querying sources for the same known candidate twice in one run.
     for p in scraped:
-        if any(same_work(p, old) for old in kept): continue
-        if any(same_work(p, old) for old in pending): continue
+        if any(same_work(p,old) for old in kept):
+            audit.append(('ALREADY ON SITE',p['title'],p['date'],p['source']))
+            continue
+        if any(same_work(p,old) for old in pending):
+            audit.append(('DUPLICATE',p['title'],p['date'],p['source']))
+            continue
         p['kind'] = classify(p)
-        details = source_details(p['source'])
-        if p['kind'] == 'academic':
-            crossref = doi_details(p.get('doi'))
-            details['authors'] = crossref.get('authors') or details.get('authors','')
-            details['venue'] = crossref.get('venue') or details.get('venue','')
-        p['authors'] = details.get('authors','')
-        p['venue'] = details.get('venue','')
         p['local_image'] = choose_image(p)
         p['image_alt'] = 'Editorial illustration related to '+p['title'][:80]
+        details = source_details(p['source'])
+        p['authors'] = details.get('authors','')
+        p['venue'] = details.get('venue','')
         if p['kind'] == 'popular':
-            # No AI article: use a short source excerpt and link to the original.
+            p['type'] = 'Popular writing'
+            p['angle'] = p['title']
             intro = details.get('intro','')
-            if intro:
+            if intro and len(intro.split())>=18:
                 p['teaser'] = excerpt(intro)
                 p['status'] = 'popular-source-excerpt'
-            else:
-                p['status'] = 'needs-source-review'
-            p['angle'] = p['title']
-            p['type'] = 'Popular writing'
-            if p['status'] == 'popular-source-excerpt':
                 kept.append(p)
+                audit.append(('PROPOSED popular link',p['title'],p['date'],p['source']))
                 continue
+            p['status']='needs-original-introduction'
+            p['review_reason']='Original article introduction unavailable (link / login / JS or redirect)'
         else:
-            source_text = extract_source(p['source'])
-            if good_metadata(p) and len(source_text) >= 1300 and os.getenv('OPENAI_API_KEY'):
+            p['type']='Academic publication'
+            crossref = doi_details(p.get('doi'))
+            openalex = openalex_details(p)
+            p['authors'] = crossref.get('authors') or openalex.get('authors') or p['authors']
+            p['venue'] = crossref.get('venue') or openalex.get('venue') or p['venue']
+            fulltext, basis = source_material(p,crossref,openalex)
+            p['evidence_basis'] = basis
+            if good_metadata(p) and fulltext and os.getenv('OPENAI_API_KEY'):
                 try:
-                    generated = draft(p, source_text)
+                    p['abstract'] = max([p.get('abstract',''),crossref.get('abstract',''),
+                                         openalex.get('abstract','')],key=len)
+                    generated = draft(p,fulltext)
                     if generated:
-                        for key in ('angle','teaser','tags'): p[key] = generated[key]
+                        for key in ('angle','teaser','tags'):
+                            p[key] = generated[key]
+                        if not good_teaser(p): raise ValueError('Generated teaser failed editorial checks')
                         articles[p['id']] = generated['paragraphs']
-                        p['status'] = 'ai-draft-needs-review'
-                        if good_teaser(p):
-                            kept.append(p)
-                            continue
+                        p['status']='ai-draft-needs-review'
+                        kept.append(p)
+                        audit.append(('PROPOSED academic story ('+basis+')',p['title'],p['date'],p['source']))
+                        continue
                 except Exception as ex:
-                    print('Draft needs manual attention:', p['title'], repr(ex))
-            p['status'] = 'needs-source-or-metadata-review'
+                    p['review_reason']='Draft generation failed: '+str(ex)[:200]
+            if not good_metadata(p):
+                p['review_reason']='Missing verified authors or journal/venue'
+            elif not fulltext:
+                p['review_reason']='Insufficient full text or detailed abstract'
+            elif not os.getenv('OPENAI_API_KEY'):
+                p['review_reason']='OPENAI_API_KEY secret unavailable'
+            p['status']='needs-source-or-metadata-review'
         pending.append(p)
-    # Store source candidates for review, not on the public site.
-    pending = [p for p in previous if not any(same_work(p, x) for x in kept + pending)] + pending
-    kept.sort(key=lambda p:p['date'], reverse=True)
+        audit.append(('NEEDS REVIEW: '+p.get('review_reason','unknown'),p['title'],p['date'],p['source']))
+    # Do not carry stale duplicates into the register.
+    pending = [p for p in previous if not any(same_work(p,x) for x in kept+pending)]+pending
+    kept.sort(key=lambda p:p['date'],reverse=True)
+    pending.sort(key=lambda p:p.get('date',''),reverse=True)
     candidates_path.write_text(json.dumps(pending,indent=2,ensure_ascii=False)+'\n')
     PUB.write_text(json.dumps(kept,indent=2,ensure_ascii=False)+'\n')
     ARTICLES.write_text(json.dumps(articles,indent=2,ensure_ascii=False)+'\n')
     (ROOT/'data/site-data.js').write_text(
         '/* Generated; do not edit by hand. */\nwindow.RESEARCH_DATA = '+
         json.dumps({'publications':kept,'articles':articles},ensure_ascii=False).replace('</','<\\/')+';\n')
-    print(f'Prepared {len(kept)} unique stories and {len(pending)} source candidates for PR approval.')
+    # The report makes omissions visible and reviewable rather than silent.
+    lines=['# Four-year Warwick discovery report','',
+           f'Generated: {today.isoformat()} (publication cutoff {cutoff.isoformat()})','',
+           f'- Warwick candidate records: **{len(scraped)}**',
+           f'- Proposed website stories (including existing): **{len(kept)}**',
+           f'- Pending records requiring human review: **{len(pending)}**','',
+           'Status | Publication | Date | Source','--- | --- | --- | ---']
+    for status,title,date,source in audit:
+        title=title.replace('|','/').replace('\n',' ')
+        status=status.replace('|','/').replace('\n',' ')
+        lines.append(f'{status} | {title} | {date} | {source}')
+    report_path.write_text('\n'.join(lines)+'\n')
+    print(f'Prepared {len(kept)} unique stories, {len(pending)} review candidates,'
+          ' and a full discovery report in data/discovery-report.md')
 
 if __name__ == '__main__':
     main()

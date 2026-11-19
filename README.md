@@ -45,3 +45,11 @@ Open `index.html` directly, or use VS Code Live Server / Live Preview. `data/sit
 ### Local images
 
 The story tiles use locally stored, photographic-style WebP images with no topic labels embedded in them. These are editorial illustrations, not original publication figures. The files are in `images/` and can be replaced independently. Newly discovered publications default to `images/market-feature.webp` until reviewed.
+
+## Four-year discovery and pull-request previews (November 2026)
+
+The monthly scraper reads all accessible Warwick output pages, handles PREPRINT and year-only entries, and tries original sources, Crossref, OpenAlex, and openly available PDFs. Academic works only enter the proposed website with verified bibliographic details and complete 500–1,000-word draft stories. Popular writings use a short excerpt from the source and a direct link, not a new AI article. Missing information is recorded in `data/candidates.json`, with a per-record audit in `data/discovery-report.md`. No candidates are published before you merge the editorial pull request.
+
+Each pull request receives a browser-preview comment, linking to the exact PR commit through `raw.githack.com`. This previews HTML/CSS/JS and images without changing the live GitHub Pages homepage; it is a third-party, public preview, so do not use it for confidential drafts. The updated link is posted whenever the PR changes. Repository **Settings → Actions → General → Workflow permissions** must allow pull-request comments (read/write as appropriate). If a preview comment fails, the equivalent URL is `https://raw.githack.com/tvanrens/spotlight/COMMIT_SHA/index.html`.
+
+Open the preview, check the articles and source credits, and only merge after editorial approval. The four-year window is counted back from each refresh date, not fixed to the original launch.
