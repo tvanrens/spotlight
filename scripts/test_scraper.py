@@ -1,6 +1,6 @@
 """Offline regression tests for older Warwick records and matching."""
 import datetime
-from scripts.update import parse, same_work, classify, normalize_title
+from scripts.update import parse, same_work, classify, normalize_title, source_details
 sample = """Outputs
 Showing page 1 out of 4
 Showing page 1, outputs 1 to 25 of 76
