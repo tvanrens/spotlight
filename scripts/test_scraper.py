@@ -60,3 +60,13 @@ import inspect
 implementation = inspect.getsource(draft)
 assert "300 <= count <= 1000" in implementation
 assert "if attempt:" in implementation
+
+assert "sufra" in popular_fallback({
+    "title": "Video: The SALIENT Sufra Food Bank Trial"
+}).lower()
+assert "supermarket vouchers" in popular_fallback({
+    "title": "Video: The SALIENT Sufra Food Bank Trial"
+}).lower()
+assert source_details("https://www.youtube.com/watch?v=fbXL9Yd-J1c") == {}
+from scripts.update import choose_image
+assert choose_image({"id":"publication-826da0169a5f","title":"Video: The SALIENT Sufra Food Bank Trial"}).endswith("publication-826da0169a5f.svg")
