@@ -45,8 +45,8 @@
     "teaser": "A systematic review of food swap interventions in grocery settings reveals that offering healthier product alternatives can effectively enhance the nutritional quality of food purchases. Although most studies focused on improving health markers such as saturated fat and sodium content, potential environmental benefits remain unexplored.",
     "status": "ai-draft-needs-review",
     "kind": "academic",
-    "local_image": "images/editorial/publication-cd2d107090c0.svg",
-    "image_alt": "Research-specific illustration for A Systematic Review of Food Swap Interventions Used in Grocery Store Settings",
+    "local_image": "images/featured/publication-cd2d107090c0.webp",
+    "image_alt": "Colourful original editorial illustration for A Systematic Review of Food Swap Interventions Used in Grocery Store Settings",
     "authors": "Helena Bentil, Edward Hillier, Oliver Huse, Sarah Shaw, Viktorija Kesaite, Jessica Brock, Bisola Osifowora, Anoushka Kumar, Hamideh Mohtashami Borzadaran, Jessica Renzella, Thijs van Rens, Oyinlola Oyebode",
     "venue": "Nutrition Reviews",
     "evidence_basis": "abstract only",
@@ -85,8 +85,8 @@
     "teaser": "A UK study finds that joining Your Local Pantry community food shops significantly reduces food insecurity, with frequent visits linked to improved dietary quality. This natural experiment highlights the potential of affordable, membership-based food shops in tackling food poverty and promoting healthier diets.",
     "status": "ai-draft-needs-review",
     "kind": "academic",
-    "local_image": "images/editorial/publication-8db8b5aaf7d7.svg",
-    "image_alt": "Research-specific illustration for OP81 Evaluating the impact of community food shop membership on food insecurity and dietary quality: a natural experiment evaluation using quasi-random variation from a waitlist",
+    "local_image": "images/featured/publication-8db8b5aaf7d7.webp",
+    "image_alt": "Colourful original editorial illustration for OP81 Evaluating the impact of community food shop membership on food insecurity and dietary quality: a natural experiment evaluation using quasi-random variation from a waitlist",
     "authors": "Suruchi G Ganbavale, Thijs van Rens, Rachel Loopstra",
     "venue": "SSM Annual Scientific Meeting",
     "evidence_basis": "abstract only",
@@ -180,7 +180,7 @@
     "angle": "Can food pantries make a measurable difference?",
     "teaser": "Food pantries promise a route to more secure diets. A national quasi-experimental study investigates whether membership can make a measurable difference to food insecurity in England.",
     "image": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Research-specific illustration for Evaluating the impact of food pantry membership on food insecurity amongst English households: a national-level quasi-experimental study",
+    "image_alt": "Colourful original editorial illustration for Evaluating the impact of food pantry membership on food insecurity amongst English households: a national-level quasi-experimental study",
     "tags": [
       "Food insecurity",
       "Evaluation"
@@ -188,7 +188,7 @@
     "status": "verified-abstract",
     "authors": "Suruchi Gajanan Ganbavale, Thijs van Rens, Oyinlola Oyebode, Natasha Bayes and Rachel Loopstra",
     "venue": "Journal of Epidemiology & Community Health, 80(Suppl 1), A12.1 (conference abstract, 2026)",
-    "local_image": "images/editorial/pantry-food-insecurity.svg",
+    "local_image": "images/featured/pantry-food-insecurity.webp",
     "kind": "academic"
   },
   {
@@ -226,7 +226,7 @@
     "angle": "What actually works when governments try to improve our diets?",
     "teaser": "Taxes, labels, reformulation, subsidies: which tools really improve diets? A review spanning 718 studies suggests changing what companies sell may matter more than simply telling consumers what to buy.",
     "image": "https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Research-specific illustration for Health economics evidence for food system policy: a systematic review of reviews",
+    "image_alt": "Colourful original editorial illustration for Health economics evidence for food system policy: a systematic review of reviews",
     "tags": [
       "Nutrition",
       "Public policy",
@@ -235,7 +235,7 @@
     "status": "verified-abstract",
     "authors": "Lin Fu, Irina Pokhilenko, Thijs van Rens, Richard Smith and Emma Frew",
     "venue": "Frontiers in Nutrition, volume 12 (2025)",
-    "local_image": "images/editorial/food-policy-review.svg",
+    "local_image": "images/featured/food-policy-review.webp",
     "kind": "academic"
   },
   {
@@ -320,7 +320,7 @@
     "angle": "Which wins at the virtual checkout: labels or savings?",
     "teaser": "A label tells us which product is greener. A discount gives us a reason to choose it. A randomised online grocery trial tests how these approaches work together.",
     "image": "https://images.unsplash.com/photo-1604908176997-4311cd2d6e98?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Research-specific illustration for The use of eco-labels and price discounts to promote more sustainable online grocery purchases in the UK: a randomised controlled trial",
+    "image_alt": "Colourful original editorial illustration for The use of eco-labels and price discounts to promote more sustainable online grocery purchases in the UK: a randomised controlled trial",
     "tags": [
       "Eco-labels",
       "Price incentives"
@@ -328,7 +328,7 @@
     "status": "verified-abstract",
     "authors": "Oyinlola Oyebode, Helena Bentil, Hamideh Mohtashami Borzadaran, Peter Scarborough, Martin White, Claire Thompson, Jessica Brock, Michael Clark, Edward Hillier, Anoushka Kumar, Hao Yu, Theresa Marteau, Jean Adams and Thijs van Rens",
     "venue": "Journal of Epidemiology & Community Health, 79(Suppl 1), A76.2 (conference abstract, 2025)",
-    "local_image": "images/editorial/ecolabel-abstract.svg",
+    "local_image": "images/featured/ecolabel-abstract.webp",
     "kind": "academic"
   },
   {
@@ -343,7 +343,7 @@
     "angle": "Could a browser extension change the weekly food shop?",
     "teaser": "A small pilot put sustainability labels directly into a real online supermarket. The biggest discovery wasn't a dramatic change in buying—it was a new way to test shopping interventions without needing a retailer to take part.",
     "image": "https://images.unsplash.com/photo-1601593768795-5c1c2b147f5f?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Research-specific illustration for Promoting environmentally sustainable food purchases in online grocery shopping: insights from a pilot randomised controlled field trial",
+    "image_alt": "Colourful original editorial illustration for Promoting environmentally sustainable food purchases in online grocery shopping: insights from a pilot randomised controlled field trial",
     "tags": [
       "Online shopping",
       "Experiment",
@@ -352,7 +352,7 @@
     "status": "verified-abstract",
     "authors": "Helena Bentil, Oyinlola Oyebode, Peter Scarborough, Claire Thompson, Jessica Brock, Michael Clark, Martin White and Thijs van Rens",
     "venue": "BMC Research Notes, volume 18, article 294 (2025)",
-    "local_image": "images/editorial/pilot-online-groceries.svg",
+    "local_image": "images/featured/pilot-online-groceries.webp",
     "kind": "academic"
   },
   {
@@ -366,7 +366,7 @@
     "angle": "The food industry has a dirty secret—and it's making Britain poorer and unhealthier",
     "teaser": "Cheap food can carry expensive consequences. This news feature examines the health and economic costs that don't appear on the supermarket receipt.",
     "image": "https://images.unsplash.com/photo-1506617420156-8e4536971650?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Research-specific illustration for The food industry has a dirty secret—and it's making Britain poorer and unhealthier",
+    "image_alt": "Colourful original editorial illustration for The food industry has a dirty secret—and it's making Britain poorer and unhealthier",
     "tags": [
       "Food industry",
       "Health"
@@ -374,7 +374,7 @@
     "status": "published-source-link",
     "authors": "Brad Young",
     "venue": "Sky News, 29 April 2025",
-    "local_image": "images/editorial/sky-food-industry.svg",
+    "local_image": "images/featured/sky-food-industry.webp",
     "kind": "popular"
   },
   {
@@ -388,7 +388,7 @@
     "angle": "New field trial explores what drives sustainable choices in online grocery shopping",
     "teaser": "Online grocery shopping offers researchers an extraordinary window into real decisions. This field trial asks what consumers do when sustainability information appears at the point of purchase.",
     "image": "https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Research-specific illustration for New field trial explores what drives sustainable choices in online grocery shopping",
+    "image_alt": "Colourful original editorial illustration for New field trial explores what drives sustainable choices in online grocery shopping",
     "tags": [
       "Field research",
       "Sustainability"
@@ -396,7 +396,7 @@
     "status": "published-source-link",
     "authors": "Thijs van Rens and Oyinlola Oyebode",
     "venue": "Springer Nature Research Communities (Behind the Paper), 18 November 2024",
-    "local_image": "images/editorial/springer-field-trial.svg",
+    "local_image": "images/featured/springer-field-trial.webp",
     "kind": "popular"
   },
   {
