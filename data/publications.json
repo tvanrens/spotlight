@@ -8,11 +8,11 @@
     "doi": "",
     "abstract": "",
     "angle": "Video: The SALIENT Sufra Food Bank Trial",
-    "teaser": "Enjoy the videos and music you love, upload original content, and share it all with friends, family, and the world on YouTube.",
-    "status": "popular-source-excerpt",
+    "teaser": "At Sufra NW London, a SALIENT research trial led by the University of Liverpool tested a simple change to food-bank support: letting people choose supermarket vouchers instead of receiving pre-packed food parcels. This short film explores how that choice can affect people's dignity, food preferences and experience of food aid.",
+    "status": "editor-reviewed-video-intro",
     "kind": "popular",
-    "local_image": "images/supermarket-aisle.webp",
-    "image_alt": "Editorial illustration related to Video: The SALIENT Sufra Food Bank Trial",
+    "local_image": "images/editorial/publication-826da0169a5f.svg",
+    "image_alt": "Research-specific illustration for The SALIENT Sufra Food Bank Trial",
     "authors": "",
     "venue": ""
   },
@@ -28,8 +28,8 @@
     "teaser": "This project was one of nine trials implemented as part of the SALIENT research programme, run by a consortium of researchers across eight universities and…",
     "status": "popular-source-excerpt",
     "kind": "popular",
-    "local_image": "images/supermarket-aisle.webp",
-    "image_alt": "Editorial illustration related to Would you like a food parcel or supermarket gift card? Results from a trial test",
+    "local_image": "images/editorial/publication-6a69ab7403be.svg",
+    "image_alt": "Research-specific illustration for Would you like a food parcel or supermarket gift card? Results from a trial testing what happens when you give people a choice of support in a food bank setting",
     "authors": "",
     "venue": ""
   },
@@ -45,8 +45,8 @@
     "teaser": "A systematic review of food swap interventions in grocery settings reveals that offering healthier product alternatives can effectively enhance the nutritional quality of food purchases. Although most studies focused on improving health markers such as saturated fat and sodium content, potential environmental benefits remain unexplored.",
     "status": "ai-draft-needs-review",
     "kind": "academic",
-    "local_image": "images/market-feature.webp",
-    "image_alt": "Editorial illustration related to A Systematic Review of Food Swap Interventions Used in Grocery Store Settings",
+    "local_image": "images/editorial/publication-cd2d107090c0.svg",
+    "image_alt": "Research-specific illustration for A Systematic Review of Food Swap Interventions Used in Grocery Store Settings",
     "authors": "Helena Bentil, Edward Hillier, Oliver Huse, Sarah Shaw, Viktorija Kesaite, Jessica Brock, Bisola Osifowora, Anoushka Kumar, Hamideh Mohtashami Borzadaran, Jessica Renzella, Thijs van Rens, Oyinlola Oyebode",
     "venue": "Nutrition Reviews",
     "evidence_basis": "abstract only",
@@ -68,8 +68,8 @@
     "teaser": "This consultation response addresses “Response to the Dutch government consultation on the sugar tax (internetconsultatie suikerbelasting)”. Follow the link to the original for the full discussion and context.",
     "status": "popular-title-summary-needs-review",
     "kind": "popular",
-    "local_image": "images/supermarket-shopper.webp",
-    "image_alt": "Editorial illustration related to Response to the Dutch government consultation on the sugar tax (internetconsulta",
+    "local_image": "images/editorial/publication-3e40d2f3aafa.svg",
+    "image_alt": "Research-specific illustration for Response to the Dutch government consultation on the sugar tax (internetconsultatie suikerbelasting)",
     "authors": "",
     "venue": ""
   },
@@ -85,8 +85,8 @@
     "teaser": "A UK study finds that joining Your Local Pantry community food shops significantly reduces food insecurity, with frequent visits linked to improved dietary quality. This natural experiment highlights the potential of affordable, membership-based food shops in tackling food poverty and promoting healthier diets.",
     "status": "ai-draft-needs-review",
     "kind": "academic",
-    "local_image": "images/supermarket-aisle.webp",
-    "image_alt": "Editorial illustration related to OP81 Evaluating the impact of community food shop membership on food insecurity ",
+    "local_image": "images/editorial/publication-8db8b5aaf7d7.svg",
+    "image_alt": "Research-specific illustration for OP81 Evaluating the impact of community food shop membership on food insecurity and dietary quality: a natural experiment evaluation using quasi-random variation from a waitlist",
     "authors": "Suruchi G Ganbavale, Thijs van Rens, Rachel Loopstra",
     "venue": "SSM Annual Scientific Meeting",
     "evidence_basis": "abstract only",
@@ -107,7 +107,7 @@
     "angle": "What if healthier, greener eating was cheaper and easier? The SALIENT food trials point the way",
     "teaser": "Could better food systems make the healthy and sustainable option the obvious one? The SALIENT trials explore what happens when the everyday shopping environment starts working in our favour.",
     "image": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Healthy colourful meal ingredients",
+    "image_alt": "Research-specific illustration for What if healthier, greener eating was cheaper and easier? The SALIENT food trials point the way",
     "tags": [
       "Healthy diets",
       "Food systems"
@@ -117,7 +117,7 @@
     "additional_source": "https://warwick.ac.uk/news/pressreleases/1-discount-on/",
     "authors": "University of Oxford (institutional news feature; individual byline not verified)",
     "venue": "University of Oxford website, 31 July 2026",
-    "local_image": "images/oxford.webp",
+    "local_image": "images/editorial/salient-oxford.svg",
     "kind": "popular"
   },
   {
@@ -131,7 +131,7 @@
     "angle": "From plate to planet: Can we eat our way out of crisis?",
     "teaser": "A meal seems like a small decision. Multiply it by millions of people, and it becomes a question about climate, health and how our food system works. An exploration of the link between plate and planet.",
     "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Plant-based meal in a bowl",
+    "image_alt": "Research-specific illustration for From plate to planet: Can we eat our way out of crisis?",
     "tags": [
       "Climate",
       "Food systems"
@@ -141,7 +141,7 @@
     "additional_source": "https://warwick.ac.uk/fac/soc/economics/news/2025/3/tackling_healthy_sustainable_diets_and_net_zero_goals_with_new_ukri_funded_thriving_project/",
     "authors": "University of Warwick (institutional impact feature; individual byline not verified)",
     "venue": "University of Warwick research impact website",
-    "local_image": "images/dining.webp",
+    "local_image": "images/editorial/plate-to-planet.svg",
     "kind": "popular"
   },
   {
@@ -156,7 +156,7 @@
     "angle": "Can a supermarket nudge shoppers towards greener baskets?",
     "teaser": "What happens when greener groceries become easier to spot—and cheaper to choose? A UK online supermarket field trial tests whether information, money, or a combination can shift what lands in our baskets.",
     "image": "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Colourful fruit and vegetable supermarket display",
+    "image_alt": "Research-specific illustration for Effects of Eco-labels and Price Discounts on Promoting More Sustainable Grocery Purchases in an Online UK Supermarket: A Randomised Controlled Field Trial",
     "tags": [
       "Food systems",
       "Field experiment",
@@ -165,7 +165,7 @@
     "status": "verified-metadata",
     "authors": "Thijs van Rens, Helena Bentil, Peter Scarborough, Hamideh Mohtashami Borzadaran, Michael Clark, Claire Thompson, Jessica Brock, Elisa Becker, Laura Cornelsen, Martin White and Oyinlola Oyebode",
     "venue": "SSRN / Preprints with The Lancet (working paper)",
-    "local_image": "images/market-feature.webp",
+    "local_image": "images/editorial/salient-trial.svg",
     "kind": "academic"
   },
   {
@@ -180,7 +180,7 @@
     "angle": "Can food pantries make a measurable difference?",
     "teaser": "Food pantries promise a route to more secure diets. A national quasi-experimental study investigates whether membership can make a measurable difference to food insecurity in England.",
     "image": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Food donation and community support",
+    "image_alt": "Research-specific illustration for Evaluating the impact of food pantry membership on food insecurity amongst English households: a national-level quasi-experimental study",
     "tags": [
       "Food insecurity",
       "Evaluation"
@@ -188,7 +188,7 @@
     "status": "verified-abstract",
     "authors": "Suruchi Gajanan Ganbavale, Thijs van Rens, Oyinlola Oyebode, Natasha Bayes and Rachel Loopstra",
     "venue": "Journal of Epidemiology & Community Health, 80(Suppl 1), A12.1 (conference abstract, 2026)",
-    "local_image": "images/supermarket-aisle.webp",
+    "local_image": "images/editorial/pantry-food-insecurity.svg",
     "kind": "academic"
   },
   {
@@ -203,8 +203,8 @@
     "teaser": "A study examining a major UK supermarket’s removal of volume price promotions found that households shopping there bought less soft drinks and confectionery, revealing potential benefits for public health policies targeting unhealthy food purchases.",
     "status": "ai-draft-needs-review",
     "kind": "academic",
-    "local_image": "images/supermarket-shopper.webp",
-    "image_alt": "Editorial illustration related to Voluntary removal of volume price promotions in a UK supermarket reduces expendi",
+    "local_image": "images/editorial/publication-e6c5fa2b8af5.svg",
+    "image_alt": "Research-specific illustration for Voluntary removal of volume price promotions in a UK supermarket reduces expenditure on soft drinks and confectionery: a household-level difference-in-difference analysis",
     "authors": "Viktorija Kesaite, Jean Adams, Oliver  T. Mytton, Martin White, Thijs van Rens",
     "venue": "SSRN Electronic Journal",
     "evidence_basis": "abstract only",
@@ -226,7 +226,7 @@
     "angle": "What actually works when governments try to improve our diets?",
     "teaser": "Taxes, labels, reformulation, subsidies: which tools really improve diets? A review spanning 718 studies suggests changing what companies sell may matter more than simply telling consumers what to buy.",
     "image": "https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Fresh fruit and vegetables on a table",
+    "image_alt": "Research-specific illustration for Health economics evidence for food system policy: a systematic review of reviews",
     "tags": [
       "Nutrition",
       "Public policy",
@@ -235,7 +235,7 @@
     "status": "verified-abstract",
     "authors": "Lin Fu, Irina Pokhilenko, Thijs van Rens, Richard Smith and Emma Frew",
     "venue": "Frontiers in Nutrition, volume 12 (2025)",
-    "local_image": "images/landscape-sunset.webp",
+    "local_image": "images/editorial/food-policy-review.svg",
     "kind": "academic"
   },
   {
@@ -249,7 +249,7 @@
     "angle": "Food for thought – eating our way to a sustainable future",
     "teaser": "From research to the dinner table: a conversation about why sustainable eating is more complicated—and more interesting—than a simple list of good and bad foods.",
     "image": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Microphone ready for a podcast",
+    "image_alt": "Research-specific illustration for Food for thought – eating our way to a sustainable future",
     "tags": [
       "Podcast",
       "Sustainable diets"
@@ -259,7 +259,7 @@
     "transcript": "https://cms.wellcome.org/sites/default/files/2025-10/s3-e6-food-for-thought-eating-our-way-to-a-sustainable-future.pdf",
     "authors": "Wellcome; presented by Alisha Wainwright, featuring Peter Scarborough and other guests",
     "venue": "When Science Finds a Way podcast, Wellcome (2025)",
-    "local_image": "images/microphone.webp",
+    "local_image": "images/editorial/food-podcast.svg",
     "kind": "popular"
   },
   {
@@ -273,7 +273,7 @@
     "angle": "The wage freeze that wasn't quite what it seemed",
     "teaser": "Economists have spent decades puzzling over why wages seem so hard to cut. Part of the mystery may lie not in employers' pay policies, but in how workers round the numbers when surveys ask about their earnings.",
     "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Calculator and financial paperwork on desk",
+    "image_alt": "Research-specific illustration for Why did we think wages are rigid for all those years?",
     "tags": [
       "Wages",
       "Inflation",
@@ -282,7 +282,7 @@
     "status": "verified-abstract",
     "authors": "See-Yu Chan, Stephan Hobler and Thijs van Rens",
     "venue": "Warwick Economics Research Papers, no. 1577 (2025)",
-    "local_image": "images/labour-city.webp",
+    "local_image": "images/editorial/wage-rigidity.svg",
     "kind": "academic"
   },
   {
@@ -297,7 +297,7 @@
     "angle": "Beyond the result: what makes shopping experiments work?",
     "teaser": "A promising intervention only matters if people use it. This process evaluation looks behind the scenes at how a real-world online supermarket study was implemented.",
     "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Shopping interface on a device",
+    "image_alt": "Research-specific illustration for The implementation of an intervention to promote sustainable and healthier food choices in online supermarkets: a qualitative process evaluation",
     "tags": [
       "Implementation",
       "Research methods"
@@ -305,7 +305,7 @@
     "status": "verified-abstract",
     "authors": "Oliver Huse, Suzan Hassan, Bea Savory, Greg Hartwell, Claire Thompson, Laura Cornelsen, Thijs van Rens, Oyinlola Oyebode, Helena Bentil and Steven Cummins",
     "venue": "Journal of Epidemiology & Community Health, 79(Suppl 1), A75.1 (conference abstract, 2025)",
-    "local_image": "images/conference.webp",
+    "local_image": "images/editorial/qualitative-process.svg",
     "kind": "academic"
   },
   {
@@ -320,7 +320,7 @@
     "angle": "Which wins at the virtual checkout: labels or savings?",
     "teaser": "A label tells us which product is greener. A discount gives us a reason to choose it. A randomised online grocery trial tests how these approaches work together.",
     "image": "https://images.unsplash.com/photo-1604908176997-4311cd2d6e98?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Fresh groceries",
+    "image_alt": "Research-specific illustration for The use of eco-labels and price discounts to promote more sustainable online grocery purchases in the UK: a randomised controlled trial",
     "tags": [
       "Eco-labels",
       "Price incentives"
@@ -328,7 +328,7 @@
     "status": "verified-abstract",
     "authors": "Oyinlola Oyebode, Helena Bentil, Hamideh Mohtashami Borzadaran, Peter Scarborough, Martin White, Claire Thompson, Jessica Brock, Michael Clark, Edward Hillier, Anoushka Kumar, Hao Yu, Theresa Marteau, Jean Adams and Thijs van Rens",
     "venue": "Journal of Epidemiology & Community Health, 79(Suppl 1), A76.2 (conference abstract, 2025)",
-    "local_image": "images/supermarket-shopper.webp",
+    "local_image": "images/editorial/ecolabel-abstract.svg",
     "kind": "academic"
   },
   {
@@ -343,7 +343,7 @@
     "angle": "Could a browser extension change the weekly food shop?",
     "teaser": "A small pilot put sustainability labels directly into a real online supermarket. The biggest discovery wasn't a dramatic change in buying—it was a new way to test shopping interventions without needing a retailer to take part.",
     "image": "https://images.unsplash.com/photo-1601593768795-5c1c2b147f5f?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Grocery shopping basket",
+    "image_alt": "Research-specific illustration for Promoting environmentally sustainable food purchases in online grocery shopping: insights from a pilot randomised controlled field trial",
     "tags": [
       "Online shopping",
       "Experiment",
@@ -352,7 +352,7 @@
     "status": "verified-abstract",
     "authors": "Helena Bentil, Oyinlola Oyebode, Peter Scarborough, Claire Thompson, Jessica Brock, Michael Clark, Martin White and Thijs van Rens",
     "venue": "BMC Research Notes, volume 18, article 294 (2025)",
-    "local_image": "images/supermarket-shopper.webp",
+    "local_image": "images/editorial/pilot-online-groceries.svg",
     "kind": "academic"
   },
   {
@@ -366,7 +366,7 @@
     "angle": "The food industry has a dirty secret—and it's making Britain poorer and unhealthier",
     "teaser": "Cheap food can carry expensive consequences. This news feature examines the health and economic costs that don't appear on the supermarket receipt.",
     "image": "https://images.unsplash.com/photo-1506617420156-8e4536971650?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Grocery supermarket aisle",
+    "image_alt": "Research-specific illustration for The food industry has a dirty secret—and it's making Britain poorer and unhealthier",
     "tags": [
       "Food industry",
       "Health"
@@ -374,7 +374,7 @@
     "status": "published-source-link",
     "authors": "Brad Young",
     "venue": "Sky News, 29 April 2025",
-    "local_image": "images/green-fields.webp",
+    "local_image": "images/editorial/sky-food-industry.svg",
     "kind": "popular"
   },
   {
@@ -388,7 +388,7 @@
     "angle": "New field trial explores what drives sustainable choices in online grocery shopping",
     "teaser": "Online grocery shopping offers researchers an extraordinary window into real decisions. This field trial asks what consumers do when sustainability information appears at the point of purchase.",
     "image": "https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=1200&q=85",
-    "image_alt": "Vegetables on supermarket shelves",
+    "image_alt": "Research-specific illustration for New field trial explores what drives sustainable choices in online grocery shopping",
     "tags": [
       "Field research",
       "Sustainability"
@@ -396,7 +396,7 @@
     "status": "published-source-link",
     "authors": "Thijs van Rens and Oyinlola Oyebode",
     "venue": "Springer Nature Research Communities (Behind the Paper), 18 November 2024",
-    "local_image": "images/market-feature.webp",
+    "local_image": "images/editorial/springer-field-trial.svg",
     "kind": "popular"
   },
   {
@@ -411,8 +411,8 @@
     "teaser": "This written evidence addresses “Written evidence to the House of Lords Select Committee on Food, Diet and Obesity”. Follow the link to the original for the full discussion and context.",
     "status": "popular-title-summary-needs-review",
     "kind": "popular",
-    "local_image": "images/parliament.webp",
-    "image_alt": "Editorial illustration related to Written evidence to the House of Lords Select Committee on Food, Diet and Obesit",
+    "local_image": "images/editorial/publication-132b794d41bc.svg",
+    "image_alt": "Research-specific illustration for Written evidence to the House of Lords Select Committee on Food, Diet and Obesity",
     "authors": "",
     "venue": ""
   },
@@ -428,8 +428,8 @@
     "teaser": "A UK pilot trial explored whether showing environmental scores on groceries in an online supermarket influences shoppers' sustainable choices. While early results were inconclusive due to limited participants, the study revealed important insights about user engagement and the challenges of promoting sustainable food choices digitally.",
     "status": "ai-draft-needs-review",
     "kind": "academic",
-    "local_image": "images/landscape-sunset.webp",
-    "image_alt": "Editorial illustration related to P72 Eco-labels in online grocery shopping: insights from a pilot trial on promot",
+    "local_image": "images/editorial/publication-83528c156f8d.svg",
+    "image_alt": "Research-specific illustration for P72 Eco-labels in online grocery shopping: insights from a pilot trial on promoting sustainable food choices",
     "authors": "H Bentil, O Oyebode, T van Rens",
     "venue": "SSM Annual Scientific Meeting",
     "evidence_basis": "abstract only",
@@ -451,8 +451,8 @@
     "teaser": "A planned adaptive design trial will evaluate the effects of eco-labelling and targeted price discounts on consumer choices in UK online supermarkets, with a focus on improving sustainability and nutritional quality.",
     "status": "ai-draft-needs-review",
     "kind": "academic",
-    "local_image": "images/landscape-sunset.webp",
-    "image_alt": "Editorial illustration related to Evaluation of Interventions in Online Grocery Shopping for Sustainability and He",
+    "local_image": "images/editorial/publication-68f45c1caff7.svg",
+    "image_alt": "Research-specific illustration for Evaluation of Interventions in Online Grocery Shopping for Sustainability and Health: An Adaptive Design Ra...",
     "authors": "Helena Bentil, Oyinlola Oyebode, Thijs van Rens",
     "venue": "Research Square",
     "evidence_basis": "full-text candidate (https://www.researchsquare.com/article/pex-2599/latest.pdf)",
@@ -474,8 +474,8 @@
     "teaser": "A recent rapid review of systematic reviews suggests intermittent fasting is as effective as continuous calorie restriction for reducing weight and fat mass, yet its effects on glucose and lipid metabolism are still uncertain.",
     "status": "ai-draft-needs-review",
     "kind": "academic",
-    "local_image": "images/conference.webp",
-    "image_alt": "Editorial illustration related to Metabolic changes following intermittent fasting",
+    "local_image": "images/editorial/publication-5ad37bd7179b.svg",
+    "image_alt": "Research-specific illustration for Metabolic changes following intermittent fasting",
     "authors": "Maria G. Lange, Alice A. Coffey, Paul C. Coleman, Thomas M. Barber, Thijs Van Rens, Oyinlola Oyebode, Sally Abbott, Petra Hanson",
     "venue": "Journal of Human Nutrition and Dietetics",
     "evidence_basis": "full-text candidate (https://figshare.warwick.ac.uk/articles/journal_contribution/Metabolic_changes_following_intermittent_fasting/33877600)",
@@ -497,8 +497,8 @@
     "teaser": "Eating a healthier — or at least a more balanced diet — is not always as easy as it sounds, with food prices leading to…",
     "status": "popular-source-excerpt",
     "kind": "popular",
-    "local_image": "images/market-feature.webp",
-    "image_alt": "Editorial illustration related to News article: Healthy foods are often more expensive. Here’s why",
+    "local_image": "images/editorial/publication-313722ae4823.svg",
+    "image_alt": "Research-specific illustration for Healthy foods are often more expensive. Here’s why",
     "authors": "Idil Karsit",
     "venue": "CNBC"
   },
@@ -514,8 +514,8 @@
     "teaser": "A University of Warwick economist has called the Prime Minister's net zero changes a “scandalous sleight of hand… which takes the public for fools”. Professor…",
     "status": "popular-source-excerpt",
     "kind": "popular",
-    "local_image": "images/conference.webp",
-    "image_alt": "Editorial illustration related to News article: Coventry professor says Rishi Sunak is treating us as 'fools' with",
+    "local_image": "images/editorial/publication-08aff01f29cd.svg",
+    "image_alt": "Research-specific illustration for Coventry professor says Rishi Sunak is treating us as 'fools' with his 'scandalous' net zero plans",
     "authors": "Kirstie McCrum",
     "venue": "Coventry Live"
   },
@@ -531,8 +531,8 @@
     "teaser": "Many families buy too little fruits and vegetables because market imperfections drive up their prices. With disturbed supply chains and rising inflation, imperfections become more…",
     "status": "popular-source-excerpt",
     "kind": "popular",
-    "local_image": "images/landscape-sunset.webp",
-    "image_alt": "Editorial illustration related to Subsidise fruits and vegetables to encourage healthy and sustainable diets",
+    "local_image": "images/editorial/publication-29327c29105c.svg",
+    "image_alt": "Research-specific illustration for Subsidise fruits and vegetables to encourage healthy and sustainable diets",
     "authors": "Roberto Pancrazi",
     "venue": "TheScienceBreaker"
   },
@@ -548,8 +548,8 @@
     "teaser": "Obesity stigma, often rooted in the misconception of personal responsibility, causes widespread psychological and socio-economic harm without preventing the condition. New insights highlight the complex causes of obesity and call for societal change to promote empathy and effective health interventions.",
     "status": "ai-draft-needs-review",
     "kind": "academic",
-    "local_image": "images/conference.webp",
-    "image_alt": "Editorial illustration related to Obesity stigma : causes, consequences, and potential solutions",
+    "local_image": "images/editorial/publication-549756e9687b.svg",
+    "image_alt": "Research-specific illustration for Obesity stigma : causes, consequences, and potential solutions",
     "authors": "Susannah Westbury, Oyinlola Oyebode, Thijs van Rens, Thomas M. Barber",
     "venue": "Current Obesity Reports",
     "evidence_basis": "full-text candidate (https://figshare.warwick.ac.uk/articles/journal_contribution/Obesity_stigma_causes_consequences_and_potential_solutions/33856762)",
@@ -571,8 +571,8 @@
     "teaser": "While policy often targets education to tackle skills mismatch, new insights reveal employers’ rigid hiring practices also play a crucial role in unemployment and productivity loss. Understanding both sides of the labour market mismatch is essential to crafting effective solutions.",
     "status": "ai-draft-needs-review",
     "kind": "academic",
-    "local_image": "images/conference.webp",
-    "image_alt": "Editorial illustration related to Rethinking the skills gap",
+    "local_image": "images/editorial/publication-505365829647.svg",
+    "image_alt": "Research-specific illustration for Rethinking the skills gap",
     "authors": ", Roland Rathelot, Thijs van Rens, , See-Yu Chan, ",
     "venue": "IZA World of Labor",
     "evidence_basis": "full-text candidate (https://wol.iza.org/uploads/articles/666/pdfs/rethinking-the-skills-gap.pdf)",
@@ -594,8 +594,8 @@
     "teaser": "A West Midlands study found that fruit and vegetable consumption rose during COVID-19 lockdown, especially among women with long commutes, alongside increased physical activity. Despite healthier lifestyle changes, participants reported poorer mental health and weight gain.",
     "status": "ai-draft-needs-review",
     "kind": "academic",
-    "local_image": "images/conference.webp",
-    "image_alt": "Editorial illustration related to Healthy diets, lifestyle changes and well-being during and after lockdown : long",
+    "local_image": "images/editorial/publication-c136ac91d492.svg",
+    "image_alt": "Research-specific illustration for Healthy diets, lifestyle changes and well-being during and after lockdown : longitudinal evidence from the West Midlands",
     "authors": "Thijs van Rens, Petra Hanson, Oyinlola Oyebode, Lukasz Walasek, Thomas M Barber, Lena Al-Khudairy",
     "venue": "BMJ Nutrition, Prevention &amp; Health",
     "evidence_basis": "full-text candidate (https://figshare.warwick.ac.uk/articles/journal_contribution/Healthy_diets_lifestyle_changes_and_well-being_during_and_after_lockdown_longitudinal_evidence_from_the_West_Midlands/33854290)",
