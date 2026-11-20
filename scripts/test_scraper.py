@@ -1,6 +1,6 @@
 """Offline regression tests for older Warwick records and matching."""
 import datetime
-from scripts.update import parse, same_work, classify, normalize_title
+from scripts.update import parse, same_work, classify, normalize_title, source_details
 sample = """Outputs
 Showing page 1 out of 4
 Showing page 1, outputs 1 to 25 of 76
@@ -60,3 +60,13 @@ import inspect
 implementation = inspect.getsource(draft)
 assert "300 <= count <= 1000" in implementation
 assert "if attempt:" in implementation
+
+assert "sufra" in popular_fallback({
+    "title": "Video: The SALIENT Sufra Food Bank Trial"
+}).lower()
+assert "supermarket vouchers" in popular_fallback({
+    "title": "Video: The SALIENT Sufra Food Bank Trial"
+}).lower()
+assert source_details("https://www.youtube.com/watch?v=fbXL9Yd-J1c") == {}
+from scripts.update import choose_image
+assert choose_image({"id":"publication-826da0169a5f","title":"Video: The SALIENT Sufra Food Bank Trial"}).endswith("publication-826da0169a5f.svg")

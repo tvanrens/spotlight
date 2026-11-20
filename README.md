@@ -57,3 +57,7 @@ Open the preview, check the articles and source credits, and only merge after ed
 ## Editorial rules (November 2026)
 
 Academic features are now **300–1,000 words**. A 300–499-word source-grounded summary is acceptable and will not be padded just to reach 500 words. When a draft is under 300 or over 1,000 words, the generator tries once to revise it using only the original source. SALIENT/Sufra's food-parcel-versus-gift-card institutional trial page is classified as **popular writing** (short source excerpt or cautious title-derived description, original link). Insufficiently documented academic outputs are **skipped**, not made into speculative features. The discovery report distinguishes automatically prepared stories, items for editorial attention, and skipped outputs; any proposed changes remain in a pull request for approval.
+
+## Story-specific editorial images
+
+Each research story now has its own locally hosted, source-specific editorial SVG illustration under `images/editorial/`. This avoids repetitive generic stock images and third-party image hotlinks. The illustrations are original visual interpretations of the publication topics, **not photographs or data figures from the original papers**. For a new monthly record, `scripts/artwork.py` creates an individual SVG deterministically; the monthly pull request includes the file for editorial review. Existing images are not regenerated. Every published card must have a distinct local image and must not expose YouTube platform boilerplate as article description.

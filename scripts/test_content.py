@@ -8,6 +8,7 @@ posts = json.loads((ROOT / 'data/publications.json').read_text())
 articles = json.loads((ROOT / 'data/articles.json').read_text())
 assert posts, 'No published stories'
 titles = []
+images = set()
 ids = set()
 for p in posts:
     assert p['id'] not in ids, f"Duplicate ID {p['id']}"
@@ -15,6 +16,10 @@ for p in posts:
     assert p.get('source','').startswith('https://'), p['id']
     assert p.get('title') and p.get('angle'), p['id']
     assert (ROOT / p['local_image']).is_file(), 'Missing local image: '+p['local_image']
+    assert p['local_image'] not in images, 'Reused editorial image: '+p['local_image']
+    images.add(p['local_image'])
+    if p['source'].startswith('https://www.youtube.com/'):
+        assert 'Enjoy the videos and music you love' not in p.get('teaser',''), 'YouTube platform boilerplate published'
     normalized = re.sub(r'\W+', ' ', p['title'].lower()).strip()
     assert all(SequenceMatcher(None, normalized, t).ratio()<0.91 for t in titles), 'Duplicate title: '+p['title']
     titles.append(normalized)
