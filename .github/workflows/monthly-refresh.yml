@@ -38,6 +38,7 @@ jobs:
             data/site-data.js
             data/candidates.json
             data/discovery-report.md
+            images/editorial/**
 
       - name: Add preview and editorial review links to monthly PR
         if: steps.monthly_pr.outputs.pull-request-number != ''
