@@ -343,6 +343,8 @@ def source_material(pub, crossref=None, openalex=None):
 
 def choose_image(p):
     """Prefer an individual editorial illustration, generating one if absent."""
+    if str(ROOT / 'scripts') not in sys.path:
+        sys.path.insert(0, str(ROOT / 'scripts'))
     from artwork import ensure_artwork
     return ensure_artwork(p)
 
