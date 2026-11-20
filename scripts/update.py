@@ -342,25 +342,18 @@ def source_material(pub, crossref=None, openalex=None):
 
 
 def choose_image(p):
-    """Reuse existing local editorial images; never auto-publish an external hotlink."""
-    title=(p.get('title') or '').lower()
-    rules=[
-      (('podcast','food for thought'),'images/microphone.webp'),
-      (('parliament','house of lords','committee'),'images/parliament.webp'),
-      (('wage','labour','employment','unemployment'),'images/labour-city.webp'),
-      (('pantry','food insecurity','food bank','community food'),'images/supermarket-aisle.webp'),
-      (('sugar','tax','drink','soda'),'images/supermarket-shopper.webp'),
-      (('environment','sustainab','climate','planet'),'images/landscape-sunset.webp'),
-      (('grocery','supermarket','shopping','swap','food'),'images/market-feature.webp'),
-    ]
-    for terms, image in rules:
-        if any(term in title for term in terms):
-            return image
-    return 'images/conference.webp'
+    """Prefer an individual editorial illustration, generating one if absent."""
+    from artwork import ensure_artwork
+    return ensure_artwork(p)
+
 
 def source_details(url):
     """Return publisher-supplied description, byline and venue when available.
     Never assign an unverified individual author."""
+    # Video hosts expose generic SEO descriptions unrelated to the film.
+    # Never copy their platform boilerplate into an editorial teaser.
+    if 'youtube.com/' in url.lower() or 'youtu.be/' in url.lower():
+        return {}
     try:
         resp = requests.get(url, timeout=25, headers={'User-Agent':'Mozilla/5.0'})
         if not resp.ok or 'html' not in resp.headers.get('content-type','').lower(): return {}
@@ -391,6 +384,15 @@ def popular_fallback(pub):
                    pub.get('title',''), flags=re.IGNORECASE).strip()
     if not title:
         return ''
+    if ('salient' in title.lower() and 'sufra' in title.lower()
+            and 'food bank' in title.lower()):
+        return (
+            'At Sufra NW London, a SALIENT research trial led by the University '
+            'of Liverpool tested a simple change to food-bank support: letting '
+            'people choose supermarket vouchers instead of receiving pre-packed '
+            'food parcels. This short film explores how that choice can affect '
+            'dignity, food preferences and the experience of food aid.'
+        )
     low = pub.get('title','').lower()
     if low.startswith('video:'):
         category = 'video'
