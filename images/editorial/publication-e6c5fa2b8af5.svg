@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 740" width="1200" height="740" role="img" aria-label="PROMOTION POLICY — original research illustration">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0C7B1"/><stop offset="1" stop-color="#f9f7ef"/></linearGradient><pattern id="dots" width="27" height="27" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2.5" fill="#704749" opacity=".08"/></pattern></defs>
+<rect width="1200" height="740" fill="url(#bg)"/><rect width="1200" height="740" fill="url(#dots)"/>
+<path d="M0 0L550 0L700 740L0 740Z" fill="#E8DF80" opacity=".36"/>
+<circle cx="215" cy="315" r="246" fill="#704749" opacity=".95"/><circle cx="240" cy="290" r="206" fill="none" stroke="#ffffff" stroke-opacity=".20" stroke-width="3"/>
+<g transform="translate(45 145) scale(3.4)" fill="none" stroke="#ffffff" stroke-width="4.1" stroke-linecap="round" stroke-linejoin="round"><path d="M27 32H73L65 87H35Z M21 32H79 M48 32L59 10 M36 52H64"/></g>
+<g transform="translate(357 470) rotate(8 78 78)"><rect x="0" y="0" width="160" height="160" rx="38" fill="#E8DF80" stroke="#704749" stroke-opacity=".16" stroke-width="3"/><g transform="translate(22 22) scale(1.16)" fill="none" stroke="#704749" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 13V87H88 M25 67L44 46L58 57L81 25 M70 25H81V37"/></g></g>
+<path d="M660 632h444" stroke="#704749" stroke-width="4" stroke-opacity=".25"/>
+<text x="690" y="110" font-family="Arial,sans-serif" font-size="25" letter-spacing="7" font-weight="700" fill="#704749" opacity=".72">RESEARCH SPOTLIGHT</text><text x="690" y="450" font-family="Arial,sans-serif" font-weight="800" font-size="77" letter-spacing="-3" fill="#704749">PROMOTION</text><text x="690" y="540" font-family="Arial,sans-serif" font-weight="800" font-size="77" letter-spacing="-3" fill="#704749">POLICY</text>
+</svg>
